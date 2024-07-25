@@ -1,0 +1,28 @@
+{
+  "name": "mobile",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "date-fns": "^3.6.0",
+    "expo": "~50.0.11",
+    "expo-camera": "^14.1.1",
+    "expo-constants": "^15.4.5",
+    "expo-image-picker": "^14.7.1",
+    "expo-status-bar": "~1.11.1",
+    "nanoid": "^5.0.6",
+    "react": "18.2.0",
+    "react-native": "0.73.4",
+    "react-native-calendar-picker": "^8.0.2",
+    "react-native-calendars": "^1.1304.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}

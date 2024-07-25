@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  },
+  "dependencies": {
+    "expo-image-picker": "^14.7.1",
+    "react-native-calendars": "^1.1304.1"
+  }
+}

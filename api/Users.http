@@ -1,0 +1,17 @@
+@url=http://localhost:3000/api
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImlhdCI6MTcwOTQ4Mzk0MiwiZXhwIjoxNzA5NTcwMzQyfQ.5UsrYVhuN44RrzaM5g5e47AYMcJhOTnuAqanyo37sz8
+
+
+### Obtener todas las tereas
+GET {{url}}/tasks HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Crear una Tarea
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer {{token}}
+
+{
+  
+}

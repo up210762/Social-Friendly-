@@ -1,0 +1,45 @@
+{
+    "name": "my-first-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "cross-env NODE_ENV=pro node dist/index.js",
+        "dev": "cross-env NODE_ENV=dev nodemon src/index.ts --exec ts-node",
+        "build": "tsc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@formkit/tempo": "^0.0.13",
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2",
+        "morgan": "^1.10.0",
+        "mysql2": "^3.7.1",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/jsonwebtoken": "^9.0.5",
+        "@types/morgan": "^1.9.9",
+        "@types/node": "^20.11.20",
+        "@typescript-eslint/eslint-plugin": "^7.1.0",
+        "@typescript-eslint/parser": "^7.1.0",
+        "cross-env": "^7.0.3",
+        "eslint": "^8.56.0",
+        "eslint-config-semistandard": "^17.0.0",
+        "eslint-config-standard": "^17.1.0",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "nodemon": "^3.0.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    }
+}

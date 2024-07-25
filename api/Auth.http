@@ -1,0 +1,25 @@
+### Variables para la petición http
+@url = http://localhost:3000/api
+
+### Create a new user
+POST {{url}}/register
+Content-Type: application/json
+
+{
+  "name": "Dónovan Alonso Hernández Carmona",
+  "username": "doaluva",
+  "email": "donovan.al@test.com",
+  "password": "123456789",
+  "birthday": "2003-05-19"
+}
+
+### Login a user
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "username": "doaluva",
+  "password": "123456789"
+}
+
+
