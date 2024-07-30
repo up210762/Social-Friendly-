@@ -61,7 +61,7 @@ export const auth = async () => {
 };
 
 export type UserRegister = {
-    name?: string;
+    fullname?: string;
     username?: string;
     email?: string;
     password?: string;

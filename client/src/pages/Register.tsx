@@ -38,7 +38,7 @@ function Register() {
     }
   }
   const handleSumbitInput = async (e: FormEvent<HTMLFormElement>) => {
-    if (user.birthday && user.email && user.name && user.password && user.username) {
+    if (user.birthday && user.email && user.fullname && user.password && user.username) {
 
       try {
         e.preventDefault();
@@ -77,12 +77,12 @@ function Register() {
               <strong>Oh snap!</strong> <a href="#" className="alert-link">Change a few things up</a> and try submitting again.
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Nombre Completo</label>
+              <label htmlFor="fullname" className="form-label">Nombre Completo</label>
               <input
                 type="text"
                 className="form-control"
-                id="name"
-                name="name"
+                id="fullname"
+                name="fullname"
                 onInput={handleInputChange} />
             </div>
             <div className="mb-3">

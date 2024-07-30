@@ -1,6 +1,7 @@
 import { RowDataPacket } from 'mysql2';
 import { encryptPass } from './hash';
 import { format } from '@formkit/tempo';
+import { MAIN_DB_PREFIX } from '../keys';
 import conn from '../db';
 
 /**
@@ -12,7 +13,7 @@ import conn from '../db';
 export const findOneBy = async ({ email, username }: UserSearch) => {
 	// Crear la sentencia SQL
 	const SQL = `
-    SELECT id, password FROM TR_USER WHERE username = ? OR email = ?;
+    SELECT id, password FROM ${MAIN_DB_PREFIX}tr_user WHERE username = ? OR email = ?;
   `;
 	const [rows] = await conn.query<UserSQL[]>(SQL, [username, email]);
 	const [user] = rows;
@@ -20,19 +21,20 @@ export const findOneBy = async ({ email, username }: UserSearch) => {
 	return user;
 };
 
-export const createOne = async ({ birthday, email, name, password, username }: UserCreate) => {
+export const createOne = async ({ fullname, username, email, password, birthday }: UserCreate) => {
 	// Genero mi consulta SQL
 	const SQL = `
-    INSERT INTO TR_USER (name, username, password, email, birthday, createdDate)
-      VALUES(?,?,?,?,?, NOW());
+    INSERT INTO ${MAIN_DB_PREFIX}tr_user (full_name, username,email,password,date_of_birthday)
+    VALUES (?,?,?,?,?);
   `;
 
+  
 	// Encripto la contraseña del usuario
 	const newPassword = await encryptPass(password);
-	const formatBirthday = format(birthday, 'YYYY-MM-DD', 'en');
-
+	const formatBirthday = format(birthday , 'YYYY-MM-DD', 'en');
+  
 	// Ejecuto la respuesta SQL
-	const [resp] = await conn.execute(SQL, [name, username, newPassword, email, formatBirthday]);
+	const [resp] = await conn.execute(SQL, [fullname, username, email, newPassword, formatBirthday]);
 
 	return resp;
 };
@@ -43,9 +45,9 @@ export interface UserSearch {
 }
 
 export interface UserCreate extends UserSearch {
-  name: string;
+  fullname: string;
   password: string;
-  birthday: Date;
+  birthday : Date;
 }
 
 export interface User extends UserSearch {

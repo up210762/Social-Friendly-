@@ -19,14 +19,13 @@ import { UserLogin, UserRegister } from '../schemas/UserSchema';
 export const registerUser: RequestHanddleRegister = async (req, res) => {
 	try {
 		// Recupero el cuerpo de la petición HTTP
-		const { name, username, password, email, birthday } = req.body;
-
+		const { fullname, username, password, email, birthday } = req.body;
 		const user = await findOneBy({username, email});
 
 		if (user)
 			return res.status(400).json({message: 'User is register'});
 
-		const resp = await createOne({name, birthday, email, password, username});
+		const resp = await createOne({fullname, birthday, email, password, username});
 
 		return res.json(resp);
 	} catch (error) {
