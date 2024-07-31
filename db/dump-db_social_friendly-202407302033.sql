@@ -1,14 +1,13 @@
-/*!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19  Distrib 10.11.8-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_social_friendly
 -- ------------------------------------------------------
--- Server version	10.11.8-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -22,7 +21,7 @@
 
 DROP TABLE IF EXISTS `sf_tc_gender`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tc_gender` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(50) DEFAULT NULL,
@@ -46,7 +45,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tc_interest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tc_interest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `interest_type` varchar(50) DEFAULT NULL,
@@ -71,7 +70,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_conversation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_conversation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `participant1_id` int(11) DEFAULT NULL,
@@ -97,7 +96,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_conversation_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_conversation_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `conversation_id` int(11) DEFAULT NULL,
@@ -125,7 +124,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message_text` text DEFAULT NULL,
@@ -150,11 +149,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_profile`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_profile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) DEFAULT NULL,
-  `date_of_birthday` date NOT NULL,
   `id_gender` int(11) DEFAULT NULL,
   `bio` text DEFAULT NULL,
   `location` varchar(200) DEFAULT NULL,
@@ -182,7 +180,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `full_name` varchar(60) NOT NULL,
@@ -190,8 +188,9 @@ CREATE TABLE `sf_tr_user` (
   `email` varchar(60) NOT NULL,
   `password` varchar(60) NOT NULL,
   `is_active` tinyint(1) DEFAULT 0,
+  `date_of_birthday` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,6 +199,7 @@ CREATE TABLE `sf_tr_user` (
 
 LOCK TABLES `sf_tr_user` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user` DISABLE KEYS */;
+INSERT INTO `sf_tr_user` VALUES (1,'Donovan Hernández','donovanpro','donovanhdz@gmail.com','$2a$10$vTyVwGgQN2KN3DGX4TrmZ.Ar.RRaUFKaNm9kesrj57SUg6XfL1IWG',0,'2003-05-19'),(2,'Osvaldo Esparza ','osvaldo69','osvaldo69eg@gmail.com','$2a$10$am3/aqsf6t5UirVsh89/V.1P2Lqlt7pI6wOrW1PY3tqQ2/DlbpqpW',0,'2003-05-14'),(3,'Angel martinez','angel69','angel@gmail.com','$2a$10$St562BZLiiUP./h6pWn8wutxka0NpDrX/liZNpN/43iFSRvU1sHZC',0,'2024-07-24'),(4,'Angel martinez','dono5','osvi@gmail.com','$2a$10$kZlp7Z812btyPy3WDrlHKea146ipFKVdFIPd0qJaoNgTNjtTWWVAC',0,'2024-07-25'),(5,'angel ortiz miguel','miguel8','migue@gmail.com','$2a$10$ILwk7/mdDOpuA4pPqwbws.0.Y/IElEQZSKci7wL./dj./Z5FJW.lS',0,'2024-07-17'),(6,'nestor villa','nestor120','nestor@gmail.com','$2a$10$QWQNDeiq6Pyrtbc81jP7gO.TctDTJ49ba3.jGePkj3Rjo2KZB05nq',0,'2024-07-18');
 /*!40000 ALTER TABLE `sf_tr_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sf_tr_user_interest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sf_tr_user_interest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -231,6 +231,10 @@ LOCK TABLES `sf_tr_user_interest` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user_interest` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sf_tr_user_interest` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'db_social_friendly'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -241,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-25 18:12:56
+-- Dump completed on 2024-07-30 20:33:49
