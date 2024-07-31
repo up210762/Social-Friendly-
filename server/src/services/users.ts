@@ -1,14 +1,15 @@
 import conn from '../db';
+import { MAIN_DB_PREFIX } from '../keys';
 
 export const getUserService = async (userId: string | number) => {
     //Crear la sentencia 
     const SQL = `select
     TU.id,
-    TU.name,
+    TU.full_name,
     TU.username,
     TU.email,
-    TU.birthday
-    from TR_USER TU
+    TU.date_of_birthday
+    from ${MAIN_DB_PREFIX}TR_USER TU
     where TU.id=?;`
 
     const [res] = await conn.query(SQL, [userId]);
@@ -18,11 +19,11 @@ export const getUserService = async (userId: string | number) => {
 export const getUsersService = async () => {
     const query = `SELECT 
     TU.id,
-    TU.name,
+    TU.full_name,
     TU.username,
     TU.email,
-    TU.birthday
-    FROM TR_USER TU;`
+    TU.date_of_birthday
+    FROM ${MAIN_DB_PREFIX}TR_USER TU;`
 
     const [users] = await conn.query(query)
 
@@ -31,10 +32,10 @@ export const getUsersService = async () => {
 
 export const updateUserService = async (userId: number | string, user: UpdateUser) => {
     // Generar la consulta SQL 1para actualizar la tarea
-    const completeUpdateSQL = `UPDATE TR_USER SET name=?, username=?, password=?, birthday=?
+    const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}TR_USER SET name=?, username=?, password=?, birthday=?
     VALUES (?,?,?) WHERE id=?;`;
 
-    const partialUpdateSQL = `UPDATE TR_USER SET name=?, username=?, birthday=?
+    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}TR_USER SET name=?, username=?, birthday=?
     WHERE id=?;`;
 
     try {
@@ -51,7 +52,7 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
 
 export const deleteUserService = async (userId: number | string) => {
     try {
-        const checkExistenceSQL = "SELECT COUNT(*) AS count FROM TR_USER WHERE id=?";
+        const checkExistenceSQL = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}TR_USER WHERE id=?`;
 
         const [rows]: any = await conn.execute(checkExistenceSQL, [userId]);
 
@@ -61,7 +62,7 @@ export const deleteUserService = async (userId: number | string) => {
             return "La tarea o usuario no existe.";
         }
 
-        const deletSQL = "DELETE FROM TR_USER WHERE id=?;";
+        const deletSQL = `DELETE FROM ${MAIN_DB_PREFIX}TR_USER WHERE id=?;`;
 
         await conn.execute(deletSQL, [userId]);
 
