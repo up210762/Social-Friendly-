@@ -17,7 +17,7 @@ import {
 
 // Schemas
 import {UserLoginSchema, UserRegisterSchema} from '../schemas/UserSchema';
-import { deleteUser, getOneUser, updateUser } from '../controller/user.controller';
+import { deleteUser, getManyUsers, getOneUser, updateUser } from '../controller/user.controller';
 
 // Instancia del Modulo Router
 const router = Router();
@@ -27,16 +27,16 @@ router.post('/register', validateSchema(UserRegisterSchema) ,registerUser);
 router.post('/login', validateSchema(UserLoginSchema) ,loginUser);
 router.post('/auth', authToken ,validarToken);
 
-router.route('/task')
-	.all(authToken)
-	.get(getAllTasks)
-	.post(createTask);
+// router.route('/task')
+// 	.all(authToken)
+// 	.get(getAllTasks)
+// 	.post(createTask);
 
-router.route('/task/:id')
-	.all(authToken)
-	.get(getOneTask)
-	.patch(updateTask)
-	.delete(deleteTask);
+// router.route('/task/:id')
+// 	.all(authToken)
+// 	.get(getOneTask)
+// 	.patch(updateTask)
+// 	.delete(deleteTask);
 
 router.route('/user')
 	.all(authToken)
@@ -44,5 +44,9 @@ router.route('/user')
 	.patch(updateUser)
 	.delete(deleteUser)
 
+router.route('/users')
+	.all(authToken)
+	.get(getManyUsers)
+	
 // Exportación del Modulo
 export default router;

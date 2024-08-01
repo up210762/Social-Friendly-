@@ -18,6 +18,11 @@ export async function getOneUser(req: Request, res: Response) {
 
 }
 
+export async function getManyUsers(req: Request, res: Response) {
+    const [users]: any = await getUsersService();
+    return res.json(users)
+}
+
 export async function updateUser(req: Request, res: Response) {
         const userId = req.user.id;
         console.log(req.body)
