@@ -19,6 +19,7 @@ const PerfilUsuario: React.FC = () => {
   const showUserData = async () => {
     try {
       const getUser = await getOneUser();
+      console.log(getUser);
       setUser(getUser);
     } catch (error) {
       console.error('Error al obtener el usuario: ', error)
@@ -28,7 +29,7 @@ const PerfilUsuario: React.FC = () => {
   if (!user)
     return;
 
-  const bornDay = new Date(user.birthday!)
+  const bornDay = new Date(user.date_of_birthday!)
 
   const updateUserForm = async (user: UserUpdate) => {
     console.log(user)
@@ -73,7 +74,7 @@ interface User {
   name: string,
   username: string,
   email: string,
-  birthday: string,
+  date_of_birthday: string,
   utlPhoto: string
 }
 export default PerfilUsuario;
