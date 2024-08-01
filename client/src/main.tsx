@@ -8,7 +8,8 @@ import App from './App';
 
 // Estilos
 import './css/index.css';
-import 'bootswatch/dist/Minty/bootstrap.min.css';
+import 'bootswatch/dist/minty/bootstrap.min.css';
+//import 'bootswatch/dist/Minty/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 
 //Punto de entrada
