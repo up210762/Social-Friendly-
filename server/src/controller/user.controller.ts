@@ -25,8 +25,7 @@ export async function getManyUsers(req: Request, res: Response) {
 
 export async function updateUser(req: Request, res: Response) {
         const userId = req.user.id;
-        console.log(req.body)
-    
+
         const resp = await updateUserService(userId, req.body)
         if (typeof resp === 'boolean') {
             if (resp === true)

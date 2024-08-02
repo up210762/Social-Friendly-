@@ -41,29 +41,6 @@ LOCK TABLES `sf_tc_gender` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `sf_tc_interest_name`
---
-
-DROP TABLE IF EXISTS `sf_tc_interest_name`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sf_tc_interest_name` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `interest_name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sf_tc_interest_name`
---
-
-LOCK TABLES `sf_tc_interest_name` WRITE;
-/*!40000 ALTER TABLE `sf_tc_interest_name` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sf_tc_interest_name` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sf_tc_interest_type_name`
 --
 
@@ -73,11 +50,10 @@ DROP TABLE IF EXISTS `sf_tc_interest_type_name`;
 CREATE TABLE `sf_tc_interest_type_name` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_interest_type` int(11) DEFAULT NULL,
-  `id_interest_name` int(11) DEFAULT NULL,
+  `interest_name` varchar(10) NOT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `sf_tc_interest_type_name_sf_tc_interest_name_FK` (`id_interest_name`),
-  CONSTRAINT `sf_tc_interest_type_name_sf_tc_interest_name_FK` FOREIGN KEY (`id_interest_name`) REFERENCES `sf_tc_interest_name` (`id`),
+  KEY `sf_tc_interest_type_name_sf_tc_interest_name_FK` (`interest_name`),
   CONSTRAINT `sf_tc_interest_type_sf_tc_type_interest_FK` FOREIGN KEY (`id`) REFERENCES `sf_tc_type_interest` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -100,7 +76,7 @@ DROP TABLE IF EXISTS `sf_tc_type_interest`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sf_tc_type_interest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `interest_type` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -214,7 +190,7 @@ CREATE TABLE `sf_tr_user` (
   `password` varchar(60) NOT NULL,
   `is_active` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,6 +199,8 @@ CREATE TABLE `sf_tr_user` (
 
 LOCK TABLES `sf_tr_user` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user` DISABLE KEYS */;
+INSERT INTO `sf_tr_user` VALUES
+(1,'Donovan Alonso Hernández','donovitali167','2003-05-19','donovanhdz167@gmail.com','x3ZU$FC~9=\"2PDW',0);
 /*!40000 ALTER TABLE `sf_tr_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,4 +242,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-01 17:16:56
+-- Dump completed on 2024-08-01 18:13:31

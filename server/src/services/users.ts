@@ -9,7 +9,7 @@ export const getUserService = async (userId: string | number) => {
     TU.username,
     TU.email,
     TU.date_of_birthday
-    from ${MAIN_DB_PREFIX}TR_USER TU
+    from ${MAIN_DB_PREFIX}tr_user TU
     where TU.id=?;`
 
     const [res] = await conn.query(SQL, [userId]);
@@ -23,7 +23,7 @@ export const getUsersService = async () => {
     TU.username,
     TU.email,
     TU.date_of_birthday
-    FROM ${MAIN_DB_PREFIX}TR_USER TU;`
+    FROM ${MAIN_DB_PREFIX}tr_user TU;`
 
     const [users] = await conn.query(query)
 
@@ -32,10 +32,10 @@ export const getUsersService = async () => {
 
 export const updateUserService = async (userId: number | string, user: UpdateUser) => {
     // Generar la consulta SQL 1para actualizar la tarea
-    const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}TR_USER SET name=?, username=?, password=?, birthday=?
-    VALUES (?,?,?) WHERE id=?;`;
+    const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, password=?, date_of_birthday=?
+    WHERE id=?;`;
 
-    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}TR_USER SET name=?, username=?, birthday=?
+    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, date_of_birthday=?
     WHERE id=?;`;
 
     try {
@@ -52,7 +52,7 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
 
 export const deleteUserService = async (userId: number | string) => {
     try {
-        const checkExistenceSQL = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}TR_USER WHERE id=?`;
+        const checkExistenceSQL = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_user WHERE id=?`;
 
         const [rows]: any = await conn.execute(checkExistenceSQL, [userId]);
 
@@ -62,7 +62,7 @@ export const deleteUserService = async (userId: number | string) => {
             return "La tarea o usuario no existe.";
         }
 
-        const deletSQL = `DELETE FROM ${MAIN_DB_PREFIX}TR_USER WHERE id=?;`;
+        const deletSQL = `DELETE FROM ${MAIN_DB_PREFIX}tr_user WHERE id=?;`;
 
         await conn.execute(deletSQL, [userId]);
 

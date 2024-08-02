@@ -99,7 +99,7 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
                 </div>
                 <div className="form-group">
                   <label htmlFor="birthday">Fecha de nacimiento:</label>
-                  <input onChange={handleChange} defaultValue={user.birthday?.toString()} type="datetime-local" className="form-control" id="birthday" name="birthday" required placeholder="Ingresa tu fecha de nacimiento" />
+                  <input onChange={handleChange} defaultValue={user.birthday?.toString()} type="date" className="form-control" id="birthday" name="birthday" required placeholder="Ingresa tu fecha de nacimiento" />
                 </div>
 
                 <div className="d-flex justify-content-end">

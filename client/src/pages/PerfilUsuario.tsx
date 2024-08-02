@@ -32,12 +32,10 @@ const PerfilUsuario: React.FC = () => {
   const bornDay = new Date(user.date_of_birthday!)
 
   const updateUserForm = async (user: UserUpdate) => {
-    console.log(user)
     if (!user)
       return;
     try {
       const res = await updateUser(user)
-      console.log(res)
     } catch (error) {
       console.error(error)
     }
