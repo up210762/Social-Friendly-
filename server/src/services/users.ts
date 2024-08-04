@@ -45,6 +45,9 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
     const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, password=?, date_of_birthday=?
     WHERE id=?;`;
 
+    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, date_of_birthday=?
+    WHERE id=?;`;
+
     const searchProfile = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_profile
     WHERE id_user=?;`;
 
@@ -52,25 +55,22 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
     (id_user, id_gender, bio, location) VALUES 
     (?,?,?,?);`;
 
-    const updateProfile =  `UPDATE ${MAIN_DB_PREFIX}tr_profile
-    SET id_gender=?, bio=?, location=?`;
-
-    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, date_of_birthday=?
-    WHERE id=?;`;
+    const updateProfile = `UPDATE ${MAIN_DB_PREFIX}tr_profile
+    SET id_gender=?, bio=?, location=? WHERE id_user=?;`;
 
     try {
-        if (!user.password) console.log("Hola")
-            //await conn.execute(partialUpdateSQL, [user.full_name, user.username, user.date_of_birthday, userId]);
-        //await conn.execute(completeUpdateSQL, [user.full_name, user.username, user.password, user.date_of_birthday, userId]);
+        if (user.password)
+            await conn.execute(completeUpdateSQL, [user.full_name, user.username, user.password, user.date_of_birthday, userId]);
+        
+        await conn.execute(partialUpdateSQL, [user.full_name, user.username, user.date_of_birthday, userId]);
 
         const [resSearchProfile]: any = await conn.execute(searchProfile, [userId]);
 
-        console.log(resSearchProfile[0])
-
-        if (resSearchProfile[0].count === 0)
-            console.log("Está vacío")
+        if (resSearchProfile[0].count === 0) {
             const resCreateProfile = await conn.execute(createProfile, [userId, null, user.description, null])
-
+        } else {
+            const resUpdateProfile = await conn.execute(updateProfile, [null, user.description, null, userId]);
+        }
         return true;
     } catch (error) {
         console.log(error);

@@ -9,7 +9,6 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     (async () => {
       try {
         const getUser = await getOneUser();
-        console.log(getUser)
         setUser(getUser)
 
         if (!user)
@@ -20,7 +19,7 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
           full_name: user.full_name,
           date_of_birthday: formatedDate,
           username: user.username,
-          description: getUser.description
+          description: user.description
         })
       } catch (error) {
         console.error(error)
@@ -31,8 +30,6 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     }
   }, [showModal])
 
-  console.log("Usuario: ", user)
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     const { name, value } = e.target;
     setUser(prevData => ({
@@ -41,7 +38,7 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     }));
   };
 
-  const handleAreaChange = (e:any) => {
+  const handleAreaChange = (e: any) => {
     const { value } = e.target;
     setUser(prevData => ({
       ...prevData,
@@ -129,6 +126,7 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     </>
   );
 };
+
 export const formatDateISOString = (date: Date): string => {
   // Extraer los componentes de la fecha y hora
   let año = date.getFullYear();
@@ -140,6 +138,7 @@ export const formatDateISOString = (date: Date): string => {
 
   return (cadenaFechaHora); // Salida: "2024-04-03T17:40"
 };
+
 export default ModalUserUpdate;
 
 interface ModalUserUpdateProps {

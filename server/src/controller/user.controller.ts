@@ -17,8 +17,6 @@ export async function getOneUser(req: Request, res: Response) {
         return;
     }
 
-    console.log(user);
-
     res.json(user);
 
 }
@@ -32,7 +30,8 @@ export async function getManyUsers(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
         const userId = req.user.id;
 
-        req.body.password = await encryptPass(req.body.password);
+        if (req.body.password)
+            req.body.password = await encryptPass(req.body.password);
 
         const resp = await updateUserService(userId, req.body)
 
