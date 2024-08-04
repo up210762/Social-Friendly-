@@ -25,7 +25,6 @@ function Login() {
       navigate('/');
     } catch (error) {
       setMostrarAlertaError("");
-      console.error(error)
     }
   }
 

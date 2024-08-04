@@ -9,16 +9,18 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     (async () => {
       try {
         const getUser = await getOneUser();
+        console.log(getUser)
         setUser(getUser)
 
         if (!user)
           return;
-        const birthday = new Date(user.birthday!)
+        const birthday = new Date(user.date_of_birthday!)
         const formatedDate = formatDateISOString(new Date(birthday))
         setUser({
-          name: user.name,
-          birthday: formatedDate,
-          username: user.username
+          full_name: user.full_name,
+          date_of_birthday: formatedDate,
+          username: user.username,
+          description: getUser.description
         })
       } catch (error) {
         console.error(error)
@@ -29,6 +31,8 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     }
   }, [showModal])
 
+  console.log("Usuario: ", user)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     const { name, value } = e.target;
     setUser(prevData => ({
@@ -37,6 +41,13 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     }));
   };
 
+  const handleAreaChange = (e:any) => {
+    const { value } = e.target;
+    setUser(prevData => ({
+      ...prevData,
+      ['description']: value
+    }));
+  }
 
   if (!user) return;
 
@@ -65,11 +76,15 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
               <form>
                 <div className="form-group">
                   <label htmlFor="name">Nombre:</label>
-                  <input onChange={handleChange} defaultValue={user.name} type="text" className="form-control" id="name" name="name" required placeholder="Ingresa tu nombre completo" />
+                  <input onChange={handleChange} defaultValue={user.full_name} type="text" className="form-control" id="full_name" name="full_name" required placeholder="Ingresa tu nombre completo" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="username">Usuario:</label>
                   <input onChange={handleChange} defaultValue={user.username} type="text" className="form-control" id="username" name="username" required placeholder="Ingresa el username nuevo" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="birthday">Descripción:</label>
+                  <textarea defaultValue={user.description!} onChange={handleAreaChange} className="form-control" id="exampleTextarea" rows={3}></textarea>
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Contraseña:</label>
@@ -83,23 +98,23 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
                       required placeholder="Ingresa una contraseña nueva"
                       style={{ width: '90%' }} />
                     <div className="btn" style={{
-                        borderColor: 'black',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        alignItems: 'center',
-                        width: '10%',
-                        height: '100%'
-                      }}>
-                      <img 
-                      src={showPassword ? '/src/assets/ojo(1).png' : '/src/assets/ojo.png'} 
-                      onClick={() => { showPassword ? setShowPassword(false) : setShowPassword(true) }} 
-                      style={{width: '100%'}}/>
+                      borderColor: 'black',
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      alignItems: 'center',
+                      width: '10%',
+                      height: '100%'
+                    }}>
+                      <img
+                        src={showPassword ? '/src/assets/ojo(1).png' : '/src/assets/ojo.png'}
+                        onClick={() => { showPassword ? setShowPassword(false) : setShowPassword(true) }}
+                        style={{ width: '100%' }} />
                     </div>
                   </div>
                 </div>
                 <div className="form-group">
                   <label htmlFor="birthday">Fecha de nacimiento:</label>
-                  <input onChange={handleChange} defaultValue={user.birthday?.toString()} type="date" className="form-control" id="birthday" name="birthday" required placeholder="Ingresa tu fecha de nacimiento" />
+                  <input onChange={handleChange} defaultValue={user.date_of_birthday?.toString()} type="date" className="form-control" id="date_of_birthday" name="date_of_birthday" required placeholder="Ingresa tu fecha de nacimiento" />
                 </div>
 
                 <div className="d-flex justify-content-end">
@@ -116,14 +131,12 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
 };
 export const formatDateISOString = (date: Date): string => {
   // Extraer los componentes de la fecha y hora
-  var año = date.getFullYear();
-  var mes = ('0' + (date.getMonth() + 1)).slice(-2); // Los meses comienzan desde 0, por eso se suma 1
-  var día = ('0' + date.getDate()).slice(-2);
-  var hora = ('0' + date.getHours()).slice(-2);
-  var minuto = ('0' + date.getMinutes()).slice(-2);
+  let año = date.getFullYear();
+  let mes = ('0' + (date.getMonth() + 1)).slice(-2); // Los meses comienzan desde 0, por eso se suma 1
+  let día = ('0' + date.getDate()).slice(-2);
 
   // Construir la cadena de fecha y hora manualmente
-  var cadenaFechaHora = año + '-' + mes + '-' + día + 'T' + hora + ':' + minuto;
+  let cadenaFechaHora = año + '-' + mes + '-' + día
 
   return (cadenaFechaHora); // Salida: "2024-04-03T17:40"
 };
@@ -136,8 +149,11 @@ interface ModalUserUpdateProps {
 }
 
 export interface UserUpdate {
-  name?: string;
+  full_name?: string;
   username?: string;
+  description?: string | null;
+  interest?: string | null;
   password?: string;
-  birthday?: Date | string;
+  date_of_birthday?: Date | string;
+  urlPhoto?: string | null
 }

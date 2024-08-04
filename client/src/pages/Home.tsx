@@ -1,34 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from 'react-bootstrap';
+import { User } from "./PerfilUsuario";
+import { getManyUsers } from "../services/users";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const sampleUsers = [
-  { id: 1, name: 'Usuario 1', description: 'Descripción del usuario 1' },
-  { id: 2, name: 'Usuario 2', description: 'Descripción del usuario 2' },
-  { id: 3, name: 'Usuario 3', description: 'Descripción del usuario 3' },
-];
 
 const TinderCarousel: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([])
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
   };
 
+  useEffect(() => {
+    getUsersInfo();
+  }, [])
+
+  const getUsersInfo = async () => {
+    const sampleUsers = await getManyUsers();
+    console.log(sampleUsers)
+    setUsers(sampleUsers)
+  }
+
+  if (!users)
+    return
+
   const handleLike = () => {
-    console.log(`Usuario ${sampleUsers[index].name} le gustó`);
+    console.log(`Usuario ${users[index].full_name} le gustó`);
     moveToNext();
   };
 
   const handleDislike = () => {
-    console.log(`Usuario ${sampleUsers[index].name} no le gustó`);
+    console.log(`Usuario ${users[index].full_name} no le gustó`);
     moveToNext();
   };
 
   const moveToNext = () => {
-    if (index < sampleUsers.length - 1) {
+    if (index < users.length - 1) {
       setIndex(index + 1);
     } else {
       console.log("No hay más usuarios.");
@@ -38,12 +49,12 @@ const TinderCarousel: React.FC = () => {
   return (
     <div className="container mt-5 d-flex flex-column align-items-center">
       <Carousel activeIndex={index} onSelect={handleSelect} interval={null} controls={false} indicators={false} className="w-50">
-        {sampleUsers.map(user => (
+        {users.map(user => (
           <Carousel.Item key={user.id}>
             <div className="card mx-auto" style={{ width: '18rem' }}>
-              <img src={`https://via.placeholder.com/150`} className="card-img-top" alt={user.name} />
+              <img src={user.urlPhoto?user.urlPhoto:`/public/avatar.png`} className="card-img-top" alt={user.full_name} />
               <div className="card-body text-center">
-                <h5 className="card-title">{user.name}</h5>
+                <h5 className="card-title">{user.full_name}</h5>
                 <p className="card-text">{user.description}</p>
                 <div className="mt-3">
                   <button className="btn btn-danger me-3" onClick={handleDislike}>

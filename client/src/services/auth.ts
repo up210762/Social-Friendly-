@@ -36,7 +36,6 @@ export function register(user: UserRegister) {
         },
         body: JSON.stringify(user)
     }).then((resp) => {
-        console.log(resp)
         if (!resp.ok) {
             throw new Error("Algo salio mal :(");
         }

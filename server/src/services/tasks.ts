@@ -50,13 +50,6 @@ export const getTasksService = async (user_id: number | string) => {
     const integer = 1
     const string = "Hola"
 
-    if (typeof bool === 'boolean')
-        console.log(typeof bool)
-    else if (typeof bool === 'number')
-        console.log(typeof integer)
-    else if (typeof bool === 'string')
-        console.log(typeof string)
-
     return tasks[0];
 };
 

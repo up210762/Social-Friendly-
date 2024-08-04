@@ -15,7 +15,6 @@ function Register() {
 
 
   const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
-    //console.log(e.currentTarget.name)
     const { value: inputValue, name: inputName } = e.currentTarget;
     setUser(preventState => ({
       ...preventState,
@@ -24,7 +23,6 @@ function Register() {
     if (inputName === "password2") {
       const originalPassword = user.password;
       const confirmPassword = inputValue;
-      console.log(`Confirm: ${confirmPassword}  Original: ${originalPassword}`)
 
 
       if (confirmPassword === "") {
@@ -44,7 +42,6 @@ function Register() {
         e.preventDefault();
         await register(user);
         navigate('/login')
-        //console.log(user)
       } catch (error) {
 
       }

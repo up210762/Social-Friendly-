@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Usuario from '../components/Usuario';
 import { getOneUser, updateUser } from '../services/users';
 import ModalUserUpdate, { UserUpdate } from '../components/ModalUserUpdate';
+import noImage from '../../public/avatar.png'
 
 const PerfilUsuario: React.FC = () => {
   const [user, setUser] = useState<User>();
@@ -19,12 +20,12 @@ const PerfilUsuario: React.FC = () => {
   const showUserData = async () => {
     try {
       const getUser = await getOneUser();
-      console.log(getUser);
       setUser(getUser);
     } catch (error) {
       console.error('Error al obtener el usuario: ', error)
     }
   };
+
 
   if (!user)
     return;
@@ -35,7 +36,7 @@ const PerfilUsuario: React.FC = () => {
     if (!user)
       return;
     try {
-      const res = await updateUser(user)
+      await updateUser(user)
     } catch (error) {
       console.error(error)
     }
@@ -49,18 +50,28 @@ const PerfilUsuario: React.FC = () => {
   if (!user)
     return;
 
+  const link = user.urlPhoto?user.urlPhoto:noImage
+
+  console.log(link)
   return (
     <div className='container mt-5 d-flex justify-content-center'>
-      <div className="perfil-usuario d-grid">
+      <div className="perfil-usuario d-grid degradade-border-image" style={{
+        
+      }}>
         <div className={`modal-backdrop fade ${mostrarFormulario ? 'show' : ''}`} style={{ zIndex: mostrarFormulario ? 1030 : -1 }}></div>
         <ModalUserUpdate showModal={mostrarFormulario} onClose={onClose} updateUserForm={updateUserForm} />
-        <h1>Perfil de Usuario</h1>
+        <h1 style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}>Perfil de Usuario</h1>
         <Usuario
-          nombre={user.name}
+          nombre={user.full_name}
+          descripcion={user.description}
+          intereses={user.interest}
           nombreUsuario={user.username}
           email={user.email}
           fechaNacimiento={bornDay.toDateString()}
-          fotoUrl={user.utlPhoto}
+          fotoUrl={link}
         />
         <button className="btn btn-primary" onClick={() => toggleFormulario(user)}>Actualizar</button>
       </div>
@@ -68,11 +79,14 @@ const PerfilUsuario: React.FC = () => {
   );
 };
 
-interface User {
-  name: string,
+export interface User {
+  id: number,
+  full_name: string,
+  description: string | null,
+  interest: string | null,
   username: string,
   email: string,
   date_of_birthday: string,
-  utlPhoto: string
+  urlPhoto: string | null
 }
 export default PerfilUsuario;

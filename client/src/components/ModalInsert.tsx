@@ -40,7 +40,6 @@ const ModalInsert: React.FC<ModalInsertProps> = ({ showModal, onClose, onTaskCre
     } catch (error) {
       console.error("Error al crear la tarea:", error);
     }
-    console.log(formData)
     onClose(); // Cierra el modal después de agregar la tarea
   };
 

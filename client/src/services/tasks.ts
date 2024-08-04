@@ -79,7 +79,6 @@ export const updateTask = async (idtask:number, taskData:TaskUpdate) => {
     },
     body: JSON.stringify(taskData)
   });
-  console.log(TASK_URL);
   // Verificar si la solicitud fue exitosa
   if (resp.ok) {
     console.log('Tarea actualizada exitosamente.');

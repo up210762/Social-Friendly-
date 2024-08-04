@@ -1,1 +1,11 @@
 @import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+.degradade-border-image {
+    padding: 5px;
+    border-top: solid;
+    border-bottom: solid;
+    border-radius: 15px;
+    box-shadow: 
+    -15px 0px 10px rgba(0, 0, 0, 0.5),
+    15px 0px 10px rgba(0, 0, 0, 0.5);
+}

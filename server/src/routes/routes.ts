@@ -16,8 +16,6 @@ router.get('/:name', (req, res) => {
 	const {name} = req.params; // Recuperar el valor de la URL
 	const {type} = req.query;
 
-	console.log({name, type});
-
 	res.send('Enviado!!!');
 });
 

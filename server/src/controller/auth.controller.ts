@@ -47,11 +47,13 @@ export const loginUser: RequestHanddleLogin = async (req, res) => {
 
 	// Valido si existe el usuario
 	const user = await findOneBy({ username, email });
+	
 	if (!user)
 		return res.status(404).json({message: 'User not found!'});
 	
 	// Valido si la contraseña es correcta
 	const isValid = await validatePass(password, user.password);
+	console.log(user, password, isValid)
 	if (!isValid)
 		return res.status(403).json({message: 'Invalid Auth'});
 	

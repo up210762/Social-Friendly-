@@ -1,31 +1,41 @@
+import { array } from 'zod';
 import conn from '../db';
 import { MAIN_DB_PREFIX } from '../keys';
 
 export const getUserService = async (userId: string | number) => {
     //Crear la sentencia 
     const SQL = `select
-    TU.id,
-    TU.full_name,
-    TU.username,
-    TU.email,
-    TU.date_of_birthday
-    from ${MAIN_DB_PREFIX}tr_user TU
-    where TU.id=?;`
+    tu.id,
+    tu.full_name,
+    tu.username,
+    tp.bio AS description,
+    tu.email,
+    tu.date_of_birthday
+    FROM ${MAIN_DB_PREFIX}tr_user tu 
+    LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
+    ON tu.id = tp.id_user
+    WHERE tu.id = ${userId};`;
 
     const [res] = await conn.query(SQL, [userId]);
     return res;
 }
 
-export const getUsersService = async () => {
+export const getUsersService = async (idUser: number) => {
     const query = `SELECT 
-    TU.id,
-    TU.full_name,
-    TU.username,
-    TU.email,
-    TU.date_of_birthday
-    FROM ${MAIN_DB_PREFIX}tr_user TU;`
+    tu.id,
+    tu.full_name,
+    tu.username,
+    tp.bio AS description,
+    tu.email,
+    (SELECT "/public/sin-fotos.png") AS urlPhoto,
+    tu.date_of_birthday
+    FROM ${MAIN_DB_PREFIX}tr_user tu 
+    LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
+    ON tu.id = tp.id_user
+    WHERE
+    tu.is_active=1 AND tu.id <> ${idUser};`;
 
-    const [users] = await conn.query(query)
+    const users = await conn.query(query);
 
     return users;
 };
@@ -35,18 +45,36 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
     const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, password=?, date_of_birthday=?
     WHERE id=?;`;
 
+    const searchProfile = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_profile
+    WHERE id_user=?;`;
+
+    const createProfile = `INSERT INTO ${MAIN_DB_PREFIX}tr_profile
+    (id_user, id_gender, bio, location) VALUES 
+    (?,?,?,?);`;
+
+    const updateProfile =  `UPDATE ${MAIN_DB_PREFIX}tr_profile
+    SET id_gender=?, bio=?, location=?`;
+
     const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, date_of_birthday=?
     WHERE id=?;`;
 
     try {
-        if (!user.password)
-            await conn.execute(partialUpdateSQL, [user.name, user.username, user.birthday, userId]);
-        await conn.execute(completeUpdateSQL, [user.name, user.username, user.password, user.birthday, userId]);
+        if (!user.password) console.log("Hola")
+            //await conn.execute(partialUpdateSQL, [user.full_name, user.username, user.date_of_birthday, userId]);
+        //await conn.execute(completeUpdateSQL, [user.full_name, user.username, user.password, user.date_of_birthday, userId]);
+
+        const [resSearchProfile]: any = await conn.execute(searchProfile, [userId]);
+
+        console.log(resSearchProfile[0])
+
+        if (resSearchProfile[0].count === 0)
+            console.log("Está vacío")
+            const resCreateProfile = await conn.execute(createProfile, [userId, null, user.description, null])
 
         return true;
-
     } catch (error) {
-        return error
+        console.log(error);
+        return false
     }
 }
 
@@ -59,7 +87,7 @@ export const deleteUserService = async (userId: number | string) => {
         const count = rows[0].count;
 
         if (count === 0) {
-            return "La tarea o usuario no existe.";
+            return "El usuario no existe.";
         }
 
         const deletSQL = `DELETE FROM ${MAIN_DB_PREFIX}tr_user WHERE id=?;`;
@@ -73,16 +101,19 @@ export const deleteUserService = async (userId: number | string) => {
 }
 
 export interface CreateUser {
-    name: string;
+    full_name: string;
     username: string;
     password: string;
     email: string;
-    birthday: Date;
+    date_of_birthday: Date;
 }
 
 export interface UpdateUser {
-    name: string | null;
+    full_name: string | null;
     username: string | null;
+    description?: string | null;
+    gender?: number | null;
+    location?: string | null;
     password?: string | null;
-    birthday: Date | null;
+    date_of_birthday: Date | null;
 }

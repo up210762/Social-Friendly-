@@ -34,7 +34,6 @@ poolConnection.getConnection((error, connection) => {
 
 	if (connection)
 		console.log('>> DB is connected!');
-	
 });
 
 type MySQLErrors = {
