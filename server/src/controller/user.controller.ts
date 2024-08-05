@@ -22,7 +22,7 @@ export async function getOneUser(req: Request, res: Response) {
 }
 
 export async function getManyUsers(req: Request, res: Response) {
-    const id: userInfo = verify(req.headers['authorization']!.split(" ")[1]!, JWT_SECRET);
+    const id: any = verify(req.headers['authorization']!.split(" ")[1]!, JWT_SECRET);
     const [users]: any = await getUsersService(id['id']);
     return res.json(users)
 }
@@ -49,8 +49,4 @@ export async function deleteUser(req: Request, res: Response) {
     const userId = req.user.id
     const resp = await deleteUserService(userId)
     res.status(200).json({ message: resp });
-}
-
-interface userInfo {
-    [id: number]: any
 }

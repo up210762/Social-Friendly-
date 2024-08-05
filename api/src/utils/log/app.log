@@ -1,0 +1,5 @@
+2024-08-04 19:59:11 | ERROR | Traceback (most recent call last):
+  File "/home/d2023f/Documentos/Programación/Eje/Social-Friendly-/api/src/routes/Files/CreateUserDirectory.py", line 24, in create_directory
+    os.mkdir(path)
+FileExistsError: [Errno 17] File exists: 'images/@isaacn'
+

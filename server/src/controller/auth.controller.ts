@@ -53,7 +53,6 @@ export const loginUser: RequestHanddleLogin = async (req, res) => {
 	
 	// Valido si la contraseña es correcta
 	const isValid = await validatePass(password, user.password);
-	console.log(user, password, isValid)
 	if (!isValid)
 		return res.status(403).json({message: 'Invalid Auth'});
 	

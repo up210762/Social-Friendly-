@@ -21,7 +21,6 @@ const TinderCarousel: React.FC = () => {
 
   const getUsersInfo = async () => {
     const sampleUsers = await getManyUsers();
-    console.log(sampleUsers)
     setUsers(sampleUsers)
   }
 
@@ -52,7 +51,7 @@ const TinderCarousel: React.FC = () => {
         {users.map(user => (
           <Carousel.Item key={user.id}>
             <div className="card mx-auto" style={{ width: '18rem' }}>
-              <img src={user.urlPhoto?user.urlPhoto:`/public/avatar.png`} className="card-img-top" alt={user.full_name} />
+              <img src={user.urlPhoto!} className="card-img-top" alt={user.full_name} />
               <div className="card-body text-center">
                 <h5 className="card-title">{user.full_name}</h5>
                 <p className="card-text">{user.description}</p>

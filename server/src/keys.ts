@@ -13,6 +13,9 @@ export const DB_PORT = +process.env.DB_PORT! || 3306;
 export const DB_USER = process.env.DB_USER! || 'root';
 export const DB_PASS = process.env.DB_PASS! || '';
 export const MAIN_DB_PREFIX = process.env.DB_PREFIX;
+export const PATH_IMAGES = process.env.PATH_IMAGES;
+export const PATH_DEFAULT_IMAGE = process.env.DEFAULT_IMAGE;
+export const API_URL = process.env.API_URL;
 
 // Variables para el JWT
 export const JWT_SECRET = process.env.JWT_SERCRET || 'This is a test!';

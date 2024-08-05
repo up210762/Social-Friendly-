@@ -1,7 +1,7 @@
 import { RowDataPacket } from 'mysql2';
 import { encryptPass } from './hash';
 import { format } from '@formkit/tempo';
-import { MAIN_DB_PREFIX } from '../keys';
+import { API_URL, MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
 import conn from '../db';
 
 /**
@@ -11,43 +11,57 @@ import conn from '../db';
  * @returns Usuario extraido de la base de datos
  */
 export const findOneBy = async ({ email, username }: UserSearch) => {
-	// Crear la sentencia SQL
-	const SQL = `
+  // Crear la sentencia SQL
+  const SQL = `
     SELECT id, password FROM ${MAIN_DB_PREFIX}tr_user WHERE (username = ? OR email = ?) AND is_active=1;
   `;
-	const [rows] = await conn.query<UserSQL[]>(SQL, [username, email]);
-	const [user] = rows;
+  const [rows] = await conn.query<UserSQL[]>(SQL, [username, email]);
+  const [user] = rows;
 
-	return user;
+  return user;
 };
 
 export const createOne = async ({ fullname, username, email, password, birthday }: UserCreate) => {
-	// Genero mi consulta SQL
-	const SQL = `
+  // Genero mi consulta SQL
+  const SQL = `
     INSERT INTO ${MAIN_DB_PREFIX}tr_user (full_name, username,email,password,date_of_birthday)
     VALUES (?,?,?,?,?);
   `;
 
-  
-	// Encripto la contraseña del usuario
-	const newPassword = await encryptPass(password);
-	const formatBirthday = format(birthday , 'YYYY-MM-DD', 'en');
-  
-	// Ejecuto la respuesta SQL
-	const [resp] = await conn.execute(SQL, [fullname, username, email, newPassword, formatBirthday]);
+  const createProfile = `INSERT INTO ${MAIN_DB_PREFIX}tr_profile
+  (id_user, id_gender, bio, location, url_photo) VALUES 
+  (?,?,?,?,?);`;
 
-	return resp;
+  // Encripto la contraseña del usuario
+  const newPassword = await encryptPass(password);
+  const formatBirthday = format(birthday, 'YYYY-MM-DD', 'en');
+
+  // Ejecuto la respuesta SQL
+  const [resp]: any = await conn.execute(SQL, [fullname, username, email, newPassword, formatBirthday]);
+
+  await conn.execute(createProfile, [resp['insertId'], null, null, null, `${PATH_DEFAULT_IMAGE}`])
+
+  const apiUrl = `${API_URL}create-directory/${resp['insertId']}`
+
+  const respAPI = await fetch(apiUrl, {
+    method: 'POST'
+  })
+
+  if (respAPI.ok)
+    return resp;
+
+  return "Error";
 };
 
 export interface UserSearch {
   username?: string;
-  email?:string;
+  email?: string;
 }
 
 export interface UserCreate extends UserSearch {
   fullname: string;
   password: string;
-  birthday : Date;
+  birthday: Date;
 }
 
 export interface User extends UserSearch {
@@ -60,4 +74,4 @@ export interface User extends UserSearch {
   active: boolean;
 }
 
-export interface UserSQL extends User, RowDataPacket {}
+export interface UserSQL extends User, RowDataPacket { }

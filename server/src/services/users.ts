@@ -1,6 +1,5 @@
-import { array } from 'zod';
 import conn from '../db';
-import { MAIN_DB_PREFIX } from '../keys';
+import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
 
 export const getUserService = async (userId: string | number) => {
     //Crear la sentencia 
@@ -10,7 +9,8 @@ export const getUserService = async (userId: string | number) => {
     tu.username,
     tp.bio AS description,
     tu.email,
-    tu.date_of_birthday
+    tu.date_of_birthday,
+    tp.url_photo as urlPhoto
     FROM ${MAIN_DB_PREFIX}tr_user tu 
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
     ON tu.id = tp.id_user
@@ -27,7 +27,7 @@ export const getUsersService = async (idUser: number) => {
     tu.username,
     tp.bio AS description,
     tu.email,
-    (SELECT "/public/sin-fotos.png") AS urlPhoto,
+    tp.url_photo as urlPhoto,
     tu.date_of_birthday
     FROM ${MAIN_DB_PREFIX}tr_user tu 
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
@@ -51,10 +51,6 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
     const searchProfile = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_profile
     WHERE id_user=?;`;
 
-    const createProfile = `INSERT INTO ${MAIN_DB_PREFIX}tr_profile
-    (id_user, id_gender, bio, location) VALUES 
-    (?,?,?,?);`;
-
     const updateProfile = `UPDATE ${MAIN_DB_PREFIX}tr_profile
     SET id_gender=?, bio=?, location=? WHERE id_user=?;`;
 
@@ -66,11 +62,7 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
 
         const [resSearchProfile]: any = await conn.execute(searchProfile, [userId]);
 
-        if (resSearchProfile[0].count === 0) {
-            const resCreateProfile = await conn.execute(createProfile, [userId, null, user.description, null])
-        } else {
-            const resUpdateProfile = await conn.execute(updateProfile, [null, user.description, null, userId]);
-        }
+        await conn.execute(updateProfile, [null, user.description, null, userId]);
         return true;
     } catch (error) {
         console.log(error);

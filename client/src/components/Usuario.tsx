@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState } from "react";
+import ModalUploadImages from "./ModalImages";
 
 interface UsuarioProps {
   nombre: string | undefined;
@@ -19,30 +20,64 @@ const Usuario: React.FC<UsuarioProps> = ({
   fechaNacimiento,
   fotoUrl,
 }) => {
+  const [modalImagesDisplay, setModalImagesDisplay] = useState(false);
   return (
     <div className="usuario" style={{
       margin: 5,
       maxWidth: '400px',
       overflow: 'hidden',
     }}>
-      <div 
-      className="foto d-flex justify-content-center"
+      <div
+        className="foto d-flex justify-content-center"
       >
-        <img 
-        src={fotoUrl} 
-        className="d-block user-select-none"
-        alt="Photo" 
-        width="200"
-        height="200"
-        style={{
-          textAlign: 'center',
-          fontSize: '1.125rem',
-          textAnchor: 'middle',
-          borderRadius: '100px',
-          borderStyle: 'solid',
-          borderColor: 'black',
-        }}
+        <ModalUploadImages showModal={modalImagesDisplay} onClose={()=>setModalImagesDisplay(false)} />
+        <img
+          src={fotoUrl}
+          className="d-block user-select-none"
+          alt="Photo"
+          width="200"
+          height="200"
+          style={{
+            textAlign: 'center',
+            fontSize: '1.125rem',
+            textAnchor: 'middle',
+            borderRadius: '100px',
+            borderStyle: 'solid',
+            borderColor: 'black',
+          }}
         />
+        <div
+          style={{
+            height: '190px',
+            width: '170px',
+            display: 'flex',
+            alignItems: 'end',
+            justifyContent: 'end',
+            position: 'absolute',
+          }}>
+          <img src="/public/default/plus.png"
+            width="30"
+            height="30"
+            style={{
+              textAlign: 'center',
+              fontSize: '1.125rem',
+              textAnchor: 'middle',
+              backgroundColor: 'white',
+              borderRadius: '100px',
+              borderStyle: 'solid',
+            }}
+            onClick={()=>{
+              setModalImagesDisplay(!modalImagesDisplay);
+              console.log("Click");
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'grey'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'white'
+            }}
+            alt="" />
+        </div>
       </div>
       <div className="datos" style={{
         padding: '5px',

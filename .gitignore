@@ -1,3 +1,6 @@
 node_modules
 .vscode
 .env
+api/images/@*
+api/images/*.png
+__pycache__

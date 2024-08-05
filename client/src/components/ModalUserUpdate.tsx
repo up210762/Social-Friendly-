@@ -65,8 +65,17 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
           <div className="modal-content">
             <div className="modal-header d-flex justify-content-between">
               <h5 className="modal-title">Actualizar Usuario</h5>
-              <button type="button" className="close" onClick={onClose}>
-                <span>&times;</span>
+              <button 
+              type="button" 
+              className="close" 
+              onMouseEnter={(e)=>{
+                e.currentTarget.style.backgroundColor='grey'
+              }}
+              onMouseLeave={(e)=>{
+                e.currentTarget.style.backgroundColor='white'
+              }} 
+              onClick={onClose}>
+                <div >X</div>
               </button>
             </div>
             <div className="modal-body">
@@ -116,7 +125,7 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
 
                 <div className="d-flex justify-content-end">
                   <button type="button" className="btn btn-primary me-2" onClick={onClose}>Cerrar</button>
-                  <button type="button" className="btn btn-secondary" onClick={() => { updateUserForm(user); onClose(); }}>Actualizar</button>
+                  <button type="button" className="btn btn-secondary" onClick={() => updateUserForm(user)}>Actualizar</button>
                 </div>
               </form>
             </div>

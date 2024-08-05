@@ -5,8 +5,6 @@ import { ZodError, z } from 'zod';
 export const validateSchema = (schema: z.ZodObject<any, any>) => {
 	return (req: Request, res: Response, next: NextFunction) => {
 		try {
-			console.log(req.body);
-
 			schema.parse(req.body);
 			next();
 		} catch (error) {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Usuario from '../components/Usuario';
 import { getOneUser, updateUser } from '../services/users';
 import ModalUserUpdate, { UserUpdate } from '../components/ModalUserUpdate';
-import noImage from '../../public/avatar.png'
 
 const PerfilUsuario: React.FC = () => {
   const [user, setUser] = useState<User>();
@@ -26,7 +25,6 @@ const PerfilUsuario: React.FC = () => {
     }
   };
 
-
   if (!user)
     return;
 
@@ -36,7 +34,8 @@ const PerfilUsuario: React.FC = () => {
     if (!user)
       return;
     try {
-      await updateUser(user)
+      await updateUser(user);
+      onClose()
     } catch (error) {
       console.error(error)
     }
@@ -47,12 +46,6 @@ const PerfilUsuario: React.FC = () => {
     showUserData();
   }
 
-  if (!user)
-    return;
-
-  const link = user.urlPhoto?user.urlPhoto:noImage
-
-  console.log(link)
   return (
     <div className='container mt-5 d-flex justify-content-center'>
       <div className="perfil-usuario d-grid degradade-border-image" style={{
@@ -71,7 +64,7 @@ const PerfilUsuario: React.FC = () => {
           nombreUsuario={user.username}
           email={user.email}
           fechaNacimiento={bornDay.toDateString()}
-          fotoUrl={link}
+          fotoUrl={user.urlPhoto!}
         />
         <button className="btn btn-primary" onClick={() => toggleFormulario(user)}>Actualizar</button>
       </div>
