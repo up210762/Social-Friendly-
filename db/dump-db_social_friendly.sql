@@ -148,6 +148,33 @@ LOCK TABLES `sf_tr_messages` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sf_tr_path_user`
+--
+
+DROP TABLE IF EXISTS `sf_tr_path_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sf_tr_path_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) DEFAULT NULL,
+  `path` varchar(100) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `sf_tr_path_user_sf_tr_user_FK` (`id_user`),
+  CONSTRAINT `sf_tr_path_user_sf_tr_user_FK` FOREIGN KEY (`id_user`) REFERENCES `sf_tr_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sf_tr_path_user`
+--
+
+LOCK TABLES `sf_tr_path_user` WRITE;
+/*!40000 ALTER TABLE `sf_tr_path_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sf_tr_path_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sf_tr_profile`
 --
 
@@ -160,13 +187,14 @@ CREATE TABLE `sf_tr_profile` (
   `id_gender` int(11) DEFAULT NULL,
   `bio` text DEFAULT NULL,
   `location` varchar(200) DEFAULT NULL,
+  `url_photo` varchar(100) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `sf_tr_profile_sf_tc_gender_FK` (`id_gender`),
   KEY `sf_tr_profile_sf_tr_user_FK` (`id_user`),
   CONSTRAINT `sf_tr_profile_sf_tc_gender_FK` FOREIGN KEY (`id_gender`) REFERENCES `sf_tc_gender` (`id`),
   CONSTRAINT `sf_tr_profile_sf_tr_user_FK` FOREIGN KEY (`id_user`) REFERENCES `sf_tr_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,17 +204,7 @@ CREATE TABLE `sf_tr_profile` (
 LOCK TABLES `sf_tr_profile` WRITE;
 /*!40000 ALTER TABLE `sf_tr_profile` DISABLE KEYS */;
 INSERT INTO `sf_tr_profile` VALUES
-(1,3,1,'Hola, soy un chico',NULL,1),
-(2,4,NULL,'Hola, soy divertida y me gusta la naturaleza',NULL,1),
-(3,5,1,'Mi pasión es el arte',NULL,1),
-(4,6,1,'Soy muy bueno con los juegos de azar',NULL,1),
-(5,7,2,'Me gustan las películas románticas',NULL,1),
-(6,8,1,'Soy inteligente y amigable',NULL,1),
-(7,9,2,'Me gustan los videojuegos',NULL,1),
-(8,10,1,'Estoy buscando amigos',NULL,1),
-(9,11,2,'Me gusta hacer planes con mis amigos',NULL,1),
-(10,12,1,'Soy curioso',NULL,1),
-(11,13,1,'Me gustan las artes marciales',NULL,1);
+(1,1,NULL,'Hola, soy un estudiante y me gusta comer',NULL,'/public/default/avatar.png',1);
 /*!40000 ALTER TABLE `sf_tr_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +224,7 @@ CREATE TABLE `sf_tr_user` (
   `password` varchar(60) NOT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,17 +234,7 @@ CREATE TABLE `sf_tr_user` (
 LOCK TABLES `sf_tr_user` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user` DISABLE KEYS */;
 INSERT INTO `sf_tr_user` VALUES
-(3,'Dónovan Alonso Hernández','donovitali167','2003-05-17','donovanhdz167@gmail.com','$2a$10$0s7yQWiuI9qTTq2ZFbVvluN1bPIEqbi.2Dt6xgbc./QZnRHsxtpi2',1),
-(4,'Alice Johnson','alicej','1990-04-03','alice.johnson@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(5,'Bob Smith','bobsmith','1985-09-23','bob.smith@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(6,'Charlie Brown','charlieb','1992-11-30','charlie.brown@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(7,'Diana Prince','dianap','1988-06-18','diana.prince@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(8,'Edward Norton','edwardn','1991-12-14','edward.norton@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(9,'Fiona Gallagher','fionag','1993-03-08','fiona.gallagher@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(10,'George Martin','georgem','1980-07-25','george.martin@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(11,'Hannah Williams','hannahw','1987-10-03','hannah.williams@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(12,'Isaac Newton','isaacn','1975-01-04','isaac.newton@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1),
-(13,'Jackie Chan','jackiec','1960-04-07','jackie.chan@example.com','$2a$10$2oF7/Lf7TZBbEwmytT/a.ORgXpEnuHaWbtzs1rxCfRFDR7DdUyi2u',1);
+(1,'Donovan Hernandez','donovanhdz','2003-04-17','donovanhdz@gmail.com','$2a$10$ByCOuVk0bUpHj9xEqf65LOCUZP2iEuYnmltXDHKzuhpP3jIrpjMja',1);
 /*!40000 ALTER TABLE `sf_tr_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,4 +276,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-04 12:58:45
+-- Dump completed on 2024-08-04 22:45:12
