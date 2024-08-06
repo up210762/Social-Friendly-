@@ -43,14 +43,14 @@ export const createOne = async ({ fullname, username, email, password, birthday 
 
   const apiUrl = `${API_URL}create-directory/${resp['insertId']}`
 
-  const respAPI = await fetch(apiUrl, {
-    method: 'POST'
-  })
+  // const respAPI = await fetch(apiUrl, {
+  //   method: 'POST'
+  // })
 
-  if (respAPI.ok)
-    return resp;
+  // if (respAPI.ok)
+  //   return resp;
 
-  return "Error";
+  return resp;
 };
 
 export interface UserSearch {

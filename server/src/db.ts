@@ -28,6 +28,7 @@ poolConnection.getConnection((error, connection) => {
 			? console.error(DB_ERRORS[error.code!])
 			: DEFAULT_ERROR(error);
 
+		console.log(error)
 		// Salgo de la función si existe un error que ya mostre en consola
 		return;
 	}

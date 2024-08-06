@@ -1,9 +1,9 @@
 import conn from '../db';
 import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
 
-export const getUserService = async (userId: string | number) => {
+export const getInterestsService = async (userId: string | number) => {
     //Crear la sentencia 
-    const SQL = `SELECT
+    const SQL = `select
     tu.id,
     tu.full_name,
     tu.username,
@@ -19,26 +19,6 @@ export const getUserService = async (userId: string | number) => {
     const [res] = await conn.query(SQL, [userId]);
     return res;
 }
-
-export const getUsersService = async (idUser: number) => {
-    const query = `SELECT 
-    tu.id,
-    tu.full_name,
-    tu.username,
-    tp.bio AS description,
-    tu.email,
-    tp.url_photo as urlPhoto,
-    tu.date_of_birthday
-    FROM ${MAIN_DB_PREFIX}tr_user tu 
-    LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
-    ON tu.id = tp.id_user
-    WHERE
-    tu.is_active=1 AND tu.id <> ${idUser};`;
-
-    const users = await conn.query(query);
-
-    return users;
-};
 
 export const updateUserService = async (userId: number | string, user: UpdateUser) => {
     // Generar la consulta SQL 1para actualizar la tarea

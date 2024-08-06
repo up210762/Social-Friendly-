@@ -121,16 +121,23 @@ const Usuario: React.FC<UsuarioProps> = ({
             margin: '0',
             padding: '7px',
           }}>Email: {email}</p>
-        <p style={
-          {
-            display: 'flex',
-            justifyContent: 'left',
-            fontSize: '20px',
-            margin: '0',
-            borderTop: 'solid',
-            borderBottom: 'solid',
-            padding: '7px',
-          }}>Intereses: {intereses}</p>
+        <div style={{
+          width: "100%",
+          display: "flex",
+          flexWrap: "wrap",
+          margin: '0',
+          borderTop: 'solid',
+          borderBottom: 'solid',
+          padding: '7px',
+        }}>
+          <p style={
+            {
+              display: 'flex',
+              justifyContent: 'left',
+              fontSize: '20px',
+            }}>Intereses: {intereses}</p>
+          <button></button>
+        </div>
         <p style={
           {
             display: 'flex',
