@@ -1,4 +1,4 @@
-/*!999999\- enable the sandbox mode */ 
+-- /*!999999\- enable the sandbox mode */ 
 -- MariaDB dump 10.19  Distrib 10.11.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: db_social_friendly
@@ -54,12 +54,13 @@ DROP TABLE IF EXISTS `sf_tc_interest_name`;
 CREATE TABLE `sf_tc_interest_name` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_interest_type` int(11) DEFAULT NULL,
-  `interest_name` varchar(10) NOT NULL,
+  `interest_name` varchar(50) NOT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sf_tc_interest_type_name_sf_tc_interest_name_FK` (`interest_name`),
-  CONSTRAINT `sf_tc_interest_type_sf_tc_type_interest_FK` FOREIGN KEY (`id`) REFERENCES `sf_tc_type_interest` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  KEY `sf_tc_interest_name_sf_tc_type_interest_FK` (`id_interest_type`),
+  CONSTRAINT `sf_tc_interest_name_sf_tc_type_interest_FK` FOREIGN KEY (`id_interest_type`) REFERENCES `sf_tc_type_interest` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +69,13 @@ CREATE TABLE `sf_tc_interest_name` (
 
 LOCK TABLES `sf_tc_interest_name` WRITE;
 /*!40000 ALTER TABLE `sf_tc_interest_name` DISABLE KEYS */;
+INSERT INTO `sf_tc_interest_name` VALUES
+(1,1,'Salir al cine',NULL),
+(2,1,'Dalir de fiesta',NULL),
+(3,1,'Salir a un bar',NULL),
+(4,1,'Salir a un picnic',NULL),
+(5,1,'Salir de compras',NULL),
+(6,2,'Otra cosa',NULL);
 /*!40000 ALTER TABLE `sf_tc_interest_name` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +90,7 @@ CREATE TABLE `sf_tc_type_interest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,6 +99,12 @@ CREATE TABLE `sf_tc_type_interest` (
 
 LOCK TABLES `sf_tc_type_interest` WRITE;
 /*!40000 ALTER TABLE `sf_tc_type_interest` DISABLE KEYS */;
+INSERT INTO `sf_tc_type_interest` VALUES
+(1,'Salidas'),
+(2,'Actividad Física'),
+(3,'Entretenimiento'),
+(4,'Música'),
+(5,'Videojuegos');
 /*!40000 ALTER TABLE `sf_tc_type_interest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +218,7 @@ CREATE TABLE `sf_tr_profile` (
 LOCK TABLES `sf_tr_profile` WRITE;
 /*!40000 ALTER TABLE `sf_tr_profile` DISABLE KEYS */;
 INSERT INTO `sf_tr_profile` VALUES
-(1,1,NULL,'Hola, soy un estudiante y me gusta comer',NULL,'/public/default/avatar.png',1);
+(1,1,NULL,'Hola, soy un estudiante y me gusta jugar',NULL,'/public/default/avatar.png',1);
 /*!40000 ALTER TABLE `sf_tr_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +248,7 @@ CREATE TABLE `sf_tr_user` (
 LOCK TABLES `sf_tr_user` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user` DISABLE KEYS */;
 INSERT INTO `sf_tr_user` VALUES
-(1,'Donovan Hernandez','donovanhdz','2003-04-17','donovanhdz@gmail.com','$2a$10$ByCOuVk0bUpHj9xEqf65LOCUZP2iEuYnmltXDHKzuhpP3jIrpjMja',1);
+(1,'Donovan Hernandez','donovanhdz','2003-04-17','donovanhdz@gmail.com','$2a$10$BfMFquYEZb4.nsxRhOYLFewe.Kyt1wSh0NBfs/WtQ9z101YObgJfC',1);
 /*!40000 ALTER TABLE `sf_tr_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +269,7 @@ CREATE TABLE `sf_tr_user_interest` (
   KEY `sf_tr_user_interest_sf_tr_user_FK` (`user_id`),
   CONSTRAINT `sf_tr_user_interest_sf_tc_interest_FK` FOREIGN KEY (`interest_id`) REFERENCES `sf_tc_interest_name` (`id`),
   CONSTRAINT `sf_tr_user_interest_sf_tr_user_FK` FOREIGN KEY (`user_id`) REFERENCES `sf_tr_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,6 +278,12 @@ CREATE TABLE `sf_tr_user_interest` (
 
 LOCK TABLES `sf_tr_user_interest` WRITE;
 /*!40000 ALTER TABLE `sf_tr_user_interest` DISABLE KEYS */;
+INSERT INTO `sf_tr_user_interest` VALUES
+(1,1,1,1),
+(2,1,2,1),
+(3,1,3,1),
+(4,1,4,1),
+(5,1,5,1);
 /*!40000 ALTER TABLE `sf_tr_user_interest` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -276,4 +296,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-04 22:45:12
+-- Dump completed on 2024-08-06  9:19:27

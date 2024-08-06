@@ -1,0 +1,40 @@
+services:
+  backend-python:
+    build:
+      context: ./api
+    container_name: backend-python
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  backend-express:
+    build:
+      context: ./server
+    container_name: backend-express
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  frontend-react:
+    build:
+      context: ./client
+    container_name: frontend-react
+    ports:
+      - "80:5173"
+    depends_on:
+      - backend-python
+      - backend-express
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db_social_friendly
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/home/

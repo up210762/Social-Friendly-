@@ -66,7 +66,9 @@ const PerfilUsuario: React.FC = () => {
           fechaNacimiento={bornDay.toDateString()}
           fotoUrl={user.urlPhoto!}
         />
-        <button className="btn btn-primary" onClick={() => toggleFormulario(user)}>Actualizar</button>
+        <button style={{
+          fontWeight: 'bold'
+        }} className="btn btn-primary" onClick={() => toggleFormulario(user)}>Actualizar</button>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ const Usuario: React.FC<UsuarioProps> = ({
       <div
         className="foto d-flex justify-content-center"
       >
-        <ModalUploadImages showModal={modalImagesDisplay} onClose={()=>setModalImagesDisplay(false)} />
+        <ModalUploadImages showModal={modalImagesDisplay} onClose={() => setModalImagesDisplay(false)} />
         <img
           src={fotoUrl}
           className="d-block user-select-none"
@@ -66,7 +66,7 @@ const Usuario: React.FC<UsuarioProps> = ({
               borderRadius: '100px',
               borderStyle: 'solid',
             }}
-            onClick={()=>{
+            onClick={() => {
               setModalImagesDisplay(!modalImagesDisplay);
               console.log("Click");
             }}
@@ -86,50 +86,58 @@ const Usuario: React.FC<UsuarioProps> = ({
         borderBottom: 'solid',
       }}>
         <h2 style={{
+          display: 'flex',
           wordWrap: 'break-word',
           whiteSpace: 'normal',
+          justifyContent: 'left',
+          fontSize: '25px',
           borderTop: 'solid',
           borderBottom: 'solid',
           margin: '0',
-          padding: '5px',
+          padding: '7px',
         }}>{nombre}</h2>
         <p style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'left',
+          fontSize: '20px',
           margin: '0',
-          padding: '5px',
+          padding: '7px',
         }}>Username: {nombreUsuario}</p>
         <p style={
           {
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'left',
+            fontSize: '20px',
             borderTop: 'solid',
             borderBottom: 'solid',
             margin: '0',
-            padding: '5px',
+            padding: '7px',
           }}>Descripcion: {descripcion}</p>
         <p style={
           {
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'left',
+            fontSize: '20px',
             margin: '0',
-            padding: '5px',
+            padding: '7px',
           }}>Email: {email}</p>
         <p style={
           {
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'left',
+            fontSize: '20px',
             margin: '0',
             borderTop: 'solid',
             borderBottom: 'solid',
-            padding: '5px',
+            padding: '7px',
           }}>Intereses: {intereses}</p>
         <p style={
           {
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'left',
+            fontSize: '20px',
             margin: '0',
-            padding: '5px',
+            padding: '7px',
           }}>Fecha de nacimiento: {fechaNacimiento}</p>
       </div>
     </div>
