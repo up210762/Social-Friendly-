@@ -17,6 +17,8 @@ main = Blueprint('create_directory_blueprint', __name__)
 def create_directory(id):
     try:
         conn = connection()
+        if not conn:
+            return jsonify("Error de conexión.")
         cursor = conn.cursor()
         if request.method == 'POST':
             res = get_user_info(id)

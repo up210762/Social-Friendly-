@@ -12,4 +12,4 @@ def connection():
             db=os.getenv('DATABASE')
         )
     except Exception as ex:
-        return ex
+        return

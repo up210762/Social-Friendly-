@@ -41,14 +41,14 @@ export const createOne = async ({ fullname, username, email, password, birthday 
 
   await conn.execute(createProfile, [resp['insertId'], null, null, null, `${PATH_DEFAULT_IMAGE}`])
 
-  const apiUrl = `${API_URL}create-directory/${resp['insertId']}`
+  const apiUrl = new URL(`create-directory/${resp['insertId']}`, API_URL)
 
-  // const respAPI = await fetch(apiUrl, {
-  //   method: 'POST'
-  // })
+  const respAPI = await fetch(apiUrl, {
+    method: 'POST'
+  })
 
-  // if (respAPI.ok)
-  //   return resp;
+  if (respAPI.ok)
+    return resp;
 
   return resp;
 };
