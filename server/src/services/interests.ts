@@ -1,7 +1,7 @@
 import conn from '../db';
 import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
 
-export const getUsersInterestsService = async (userId: string | number) => {
+export const getUsersInterestsService = async (userId: number, interestId: number) => {
     //Crear la sentencia 
     const SQL = `SELECT
     tui.user_id, tui.interest_id
@@ -10,7 +10,7 @@ export const getUsersInterestsService = async (userId: string | number) => {
     ON tu.id = tp.id_user
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
     ON tu.id = tui.user_id
-    WHERE tu.id <> ${userId}; AND tui.user_id <> ${userId}`;
+    WHERE tu.id <> ${userId} AND tui.interest_id = ${interestId};`;
 
     const [res] = await conn.query(SQL, [userId]);
     return res;
@@ -25,7 +25,7 @@ export const getTypeInterestsService = async () => {
     return res;
 }
 
-export const getInterestsService = async (interestId: number) => {
+export const getInterestsService = async (interestId: any) => {
     //Crear la sentencia 
     const SQL = `SELECT
     tin.interest_name
@@ -38,39 +38,13 @@ export const getInterestsService = async (interestId: number) => {
     return res;
 }
 
-export const updateInterestsService = async (userId: number | string) => {
-    // Generar la consulta SQL 1para actualizar la tarea
-    const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, password=?, date_of_birthday=?
-    WHERE id=?;`;
-
-    const partialUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, date_of_birthday=?
-    WHERE id=?;`;
-
-    const searchProfile = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_profile
-    WHERE id_user=?;`;
-
-    const updateProfile = `UPDATE ${MAIN_DB_PREFIX}tr_profile
-    SET id_gender=?, bio=?, location=? WHERE id_user=?;`;
-}
-
-export const deleteUserService = async (userId: number | string) => {
-    try {
-        const checkExistenceSQL = `SELECT COUNT(*) AS count FROM ${MAIN_DB_PREFIX}tr_user WHERE id=?`;
-
-        const [rows]: any = await conn.execute(checkExistenceSQL, [userId]);
-
-        const count = rows[0].count;
-
-        if (count === 0) {
-            return "El usuario no existe.";
-        }
-
-        const deletSQL = `DELETE FROM ${MAIN_DB_PREFIX}tr_user WHERE id=?;`;
-
-        await conn.execute(deletSQL, [userId]);
-
-        return "Usuario eliminada."
-    } catch (error) {
-        return error;
-    }
+export const selectInterestsService = async (userId: number, interestId: number) => {
+    //Crear la sentencia 
+    const SQL = `INSERT INTO 
+    ${MAIN_DB_PREFIX}tr_user_interest tui 
+    (user_id, interest_id) VALUES
+    (${userId}, ${interestId})
+    `;
+    const [res] = await conn.query(SQL, [interestId]);
+    return res;
 }
