@@ -66,17 +66,12 @@ const Usuario: React.FC<UsuarioProps> = ({
               borderRadius: '100px',
               borderStyle: 'solid',
             }}
-            onClick={() => {
-              setModalImagesDisplay(!modalImagesDisplay);
-              console.log("Click");
-            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'grey'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'white'
-            }}
-            alt="" />
+            }}/>
         </div>
       </div>
       <div className="datos" style={{
@@ -156,8 +151,7 @@ const Usuario: React.FC<UsuarioProps> = ({
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'white'
-            }}
-            alt="" />
+            }}/>
         </div>
         <p style={
           {
