@@ -48,7 +48,7 @@ router.route('/interest/:id')
 	.all(authToken)
 	.get(getInterestByType)
 
-router.route('/register-interest')
+router.route('/register-interest/:id')
   .all(authToken)
   .post(registerInterest);
 
@@ -60,10 +60,10 @@ router.route('/likes')
   .all(authToken)
   .get(getLikes);
 
-router.route('/likes/check')  // Nueva ruta para verificar si existe un like
-  .all(authToken)
-  .get(checkLikeExists)// Añade el controlador para la nueva ruta
-  .post(registerInterest);
+// router.route('/likes/check')  // Nueva ruta para verificar si existe un like
+//   .all(authToken)
+//   .get(checkLikeExists);// Añade el controlador para la nueva ruta
+//   //.post(registerInterest);
 
 router.route('/like')
   .all(authToken)

@@ -1,7 +1,7 @@
 import conn from '../db';
 import { MAIN_DB_PREFIX } from '../keys';
 
-export const getUsersInterestsService = async (userId: number, interestId: number) => {
+export const getUsersInterestsService = async (userId: number) => {
     //Crear la sentencia 
     const SQL = `SELECT 
     tui.user_id,
@@ -15,6 +15,34 @@ export const getUsersInterestsService = async (userId: number, interestId: numbe
     tui.user_id;`;
 
     const res = await conn.query(SQL, [userId]);
+    return res;
+}
+export const getUsersInCommonService = async (user_id:number, ids: any) => {
+    const SQL = `SELECT 
+    tu.id,
+    tu.full_name,
+    tu.username,
+    tp.bio AS description,
+    tu.email,
+    tp.url_photo as urlPhoto,
+    tu.date_of_birthday
+    FROM sf_tr_user tu 
+    LEFT JOIN sf_tr_profile tp
+    ON tu.id = tp.id_user
+    WHERE
+    tu.is_active=1 AND tu.id <> ${user_id} AND tu.id IN (${ids})
+    ORDER BY 
+    FIELD(tu.id,${ids});`;
+
+    /*
+    
+
+    SELECT * FROM db_social_friendly.sf_tr_user
+    WHERE 
+    sf_tr_user.id IN (${ids});
+    */
+    const res = await conn.query(SQL, [ids]);
+    // console.log(res)
     return res;
 }
 
@@ -54,7 +82,7 @@ export const getInterestsByTypeService = async (interestId: any) => {
 export const selectInterestsService = async (userId: number, interestId: number) => {
     //Crear la sentencia 
     const SQL = `INSERT INTO 
-    ${MAIN_DB_PREFIX}tr_user_interest tui 
+    ${MAIN_DB_PREFIX}tr_user_interest
     (user_id, interest_id) VALUES
     (${userId}, ${interestId})
     `;
