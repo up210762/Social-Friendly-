@@ -11,7 +11,7 @@ import { loginUser, registerUser, validarToken } from '../controller/auth.contro
 // Schemas
 import { UserLoginSchema, UserRegisterSchema } from '../schemas/UserSchema';
 import { deleteUser, getManyUsers, getOneUser, updateUser } from '../controller/user.controller';
-import { getInterest, getTypeInterest, getUserInterest, registerInterest } from '../controller/interests.controller';
+import { getInterestByType, getTypeInterest, getUserInterestRoute, registerInterest } from '../controller/interests.controller';
 
 // Instancia del Modulo Router
 const router = Router();
@@ -31,17 +31,17 @@ router.route('/users')
 	.all(authToken)
 	.get(getManyUsers)
 
-router.route('/user-interest')
+router.route('/user-interest/:id')
 	.all(authToken)
-	.get(getUserInterest)
+	.get(getUserInterestRoute)
 
 router.route('/interest-type')
 	.all(authToken)
 	.get(getTypeInterest)
 
-router.route('/interest')
+router.route('/interest/:id')
 	.all(authToken)
-	.get(getInterest)
+	.get(getInterestByType)
 
 router.route('/register-interest')
 	.all(authToken)
