@@ -1,3 +1,5 @@
+// api.routes.ts
+
 // Dependencias
 import { Router } from 'express';
 
@@ -7,11 +9,10 @@ import { validateSchema } from '../middlewares/validateSchema';
 
 // Controladores
 import { loginUser, registerUser, validarToken } from '../controller/auth.controller';
-
-// Schemas
-import { UserLoginSchema, UserRegisterSchema } from '../schemas/UserSchema';
 import { deleteUser, getManyUsers, getOneUser, updateUser } from '../controller/user.controller';
 import { getInterestByType, getTypeInterest, getUserInterestRoute, registerInterest } from '../controller/interests.controller';
+import { UserLoginSchema, UserRegisterSchema } from '../schemas/UserSchema';
+import { checkLikeExists, createLike, getLikes } from '../controller/like.controller';
 
 // Instancia del Modulo Router
 const router = Router();
@@ -22,30 +23,42 @@ router.post('/login', validateSchema(UserLoginSchema), loginUser);
 router.post('/auth', authToken, validarToken);
 
 router.route('/user')
-	.all(authToken)
-	.get(getOneUser)
-	.patch(updateUser)
-	.delete(deleteUser)
+  .all(authToken)
+  .get(getOneUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 router.route('/users')
-	.all(authToken)
-	.get(getManyUsers)
+  .all(authToken)
+  .get(getManyUsers);
 
 router.route('/user-interest/:id')
 	.all(authToken)
 	.get(getUserInterestRoute)
 
 router.route('/interest-type')
-	.all(authToken)
-	.get(getTypeInterest)
+  .all(authToken)
+  .get(getTypeInterest);
 
 router.route('/interest/:id')
 	.all(authToken)
 	.get(getInterestByType)
 
 router.route('/register-interest')
-	.all(authToken)
-	.post(registerInterest)
+  .all(authToken)
+  .post(registerInterest);
+
+router.route('/like')
+  .all(authToken)
+  .post(createLike);
+
+router.route('/likes')
+  .all(authToken)
+  .get(getLikes);
+
+router.route('/likes/check')  // Nueva ruta para verificar si existe un like
+  .all(authToken)
+  .get(checkLikeExists);  // Añade el controlador para la nueva ruta
 
 // Exportación del Modulo
 export default router;
