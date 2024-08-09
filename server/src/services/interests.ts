@@ -1,5 +1,5 @@
 import conn from '../db';
-import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
+import { MAIN_DB_PREFIX } from '../keys';
 
 export const getUsersInterestsService = async (userId: number, interestId: number) => {
     //Crear la sentencia 

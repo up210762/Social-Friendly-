@@ -1,8 +1,21 @@
+// src/services/user.service.ts
 import conn from '../db';
-import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
+import { MAIN_DB_PREFIX } from '../keys';
+import { verify } from 'jsonwebtoken';
+import { JWT_SECRET } from '../keys';
+
+export const getUserByToken = async (token: string) => {
+    try {
+        const decoded: any = verify(token, JWT_SECRET);
+        const userId = decoded.id;
+        return await getUserService(userId);
+    } catch (error) {
+        console.error('Error decoding token', error);
+        throw new Error('Invalid token');
+    }
+}
 
 export const getUserService = async (userId: string | number) => {
-    //Crear la sentencia 
     const SQL = `SELECT
     tu.id,
     tu.full_name,
@@ -14,7 +27,7 @@ export const getUserService = async (userId: string | number) => {
     FROM ${MAIN_DB_PREFIX}tr_user tu 
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
     ON tu.id = tp.id_user
-    WHERE tu.id = ${userId};`;
+    WHERE tu.id = ?;`;
 
     const [res] = await conn.query(SQL, [userId]);
     return res;
@@ -33,15 +46,13 @@ export const getUsersService = async (idUser: number) => {
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
     ON tu.id = tp.id_user
     WHERE
-    tu.is_active=1 AND tu.id <> ${idUser};`;
+    tu.is_active=1 AND tu.id <> ?;`;
 
-    const users = await conn.query(query);
-
+    const [users] = await conn.query(query, [idUser]);
     return users;
 };
 
 export const updateUserService = async (userId: number | string, user: UpdateUser) => {
-    // Generar la consulta SQL 1para actualizar la tarea
     const completeUpdateSQL = `UPDATE ${MAIN_DB_PREFIX}tr_user SET full_name=?, username=?, password=?, date_of_birthday=?
     WHERE id=?;`;
 
@@ -66,7 +77,7 @@ export const updateUserService = async (userId: number | string, user: UpdateUse
         return true;
     } catch (error) {
         console.log(error);
-        return false
+        return false;
     }
 }
 
@@ -86,9 +97,10 @@ export const deleteUserService = async (userId: number | string) => {
 
         await conn.execute(deletSQL, [userId]);
 
-        return "Usuario eliminada."
+        return "Usuario eliminada.";
     } catch (error) {
-        return error;
+        console.log(error);
+        return "Error al eliminar usuario";
     }
 }
 
