@@ -6,7 +6,6 @@ import { getInterestsByTypeService,
     getUsersInterestsService,
     selectInterestsService } from '../services/interests';
 import { KnnClassifier, TraerUsersCercanos } from '../services/knnClassifier';
-import { any } from 'zod';
 
 export async function getUserInterestRoute(req: Request, res: Response) {
     const user_id: number = parseInt(req.params.id!);
@@ -41,20 +40,15 @@ export async function getTypeInterest(req: Request, res: Response) {
 
 //Este ya quedó funcional
 export async function getInterestByType(req: Request, res: Response) {
-    const typeInterestId: number = parseInt(req.params.id!)
-    //console.log(typeInterestId)
-    if (!typeInterestId) {
-        return res.status(402).json({ message: "No se encuentra el id." });
-    }
-
     try {
-        const [result] = await getInterestsByTypeService(typeInterestId)
+        const [result] = await getInterestsByTypeService();
+        
+        console.log(result)
 
         if (!result) {
             res.json({ message: "No hay información."});
             return;
         }
-        //console.log(result)
         return res.json(result);
     } catch (error) {
         // Manejar cualquier error que ocurra durante la ejecución de la consulta

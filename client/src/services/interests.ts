@@ -22,6 +22,29 @@ export const getUserType = async () => {
     throw new Error("No se pudo verificar si el like existe. Inténtalo de nuevo.");
   }
 
+
+  return res.json();
+};
+
+export const getInterests = async () => {
+  const USER_URL = new URL('interests', BASE_URL);
+
+  const res = await fetch(USER_URL, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${getToken()}`
+    }
+  });
+
+  if (!res.ok) {
+    if ([401, 403].includes(res.status)) {
+      throw new Error("Error de Autentificación");
+    }
+    throw new Error("No se pudo verificar si el like existe. Inténtalo de nuevo.");
+  }
+
+
   return res.json();
 };
 
