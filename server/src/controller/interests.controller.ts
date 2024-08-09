@@ -1,31 +1,31 @@
 // Dependencias
 // eslint-disable-next-line no-unused-vars
 import {Request, Response} from 'express';
-import { getInterestsService, getTypeInterestsService, getUsersInterestsService, selectInterestsService } from '../services/interests';
-import { KnnClassifier } from '../services/knnClassifier';
+import { getInterestsByTypeService,
+    getTypeInterestsService,
+    getUsersInterestsService,
+    selectInterestsService } from '../services/interests';
+import { KnnClassifier, TraerUsersCercanos } from '../services/knnClassifier';
+import { any } from 'zod';
 
-export async function getUserInterest(req: Request, res: Response) {
+export async function getUserInterestRoute(req: Request, res: Response) {
     const user_id: number = parseInt(req.params.id!);
-    const users = new KnnClassifier(20);
+    const userInterests: any = req.body.interests;
+    console.log("User: "+ user_id + " Interests_id: " + userInterests);
+    const classifier = new KnnClassifier(20);
+    const [users]: any = await getUsersInterestsService(user_id)
 
-    const usersInfo: any = await getUsersInterestsService(user_id)
-    usersInfo.forEach((interest: any) => {
-        users.train(interest);
-    });
-        
-
-    // if (!interestArray) {
-    //     res.json({ message: "Sin intereses" });
-    //     return
-    // }
-
-
-    
-    res.json(usersInfo);
-    console.log(usersInfo)
-    return
+    if (!users) {
+        res.json({ message: "Sin intereses" });
+        return
+    }
+    // console.log(users)
+    const ids = TraerUsersCercanos(users)
+    console.log(ids);
+    res.json(users);
 }
 
+// Este ya quedó funcional
 export async function getTypeInterest(req: Request, res: Response) {
     const [types]: any = await getTypeInterestsService();
 
@@ -39,20 +39,23 @@ export async function getTypeInterest(req: Request, res: Response) {
 
 }
 
-export async function getInterest(req: Request, res: Response) {
-    const userId: number = parseInt(req.params.id!)
-    if (!userId) {
+//Este ya quedó funcional
+export async function getInterestByType(req: Request, res: Response) {
+    const typeInterestId: number = parseInt(req.params.id!)
+    //console.log(typeInterestId)
+    if (!typeInterestId) {
         return res.status(402).json({ message: "No se encuentra el id." });
     }
 
     try {
-        const [result]: any = await getInterestsService(userId)
+        const [result] = await getInterestsByTypeService(typeInterestId)
 
         if (!result) {
             res.json({ message: "No hay información."});
             return;
         }
-        return result;
+        //console.log(result)
+        return res.json(result);
     } catch (error) {
         // Manejar cualquier error que ocurra durante la ejecución de la consulta
         console.error("Error al obtener la información:", error);

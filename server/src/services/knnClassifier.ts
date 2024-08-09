@@ -1,6 +1,6 @@
 interface User {
     user_id?: number,
-    interests_id: Array<number>
+    interests: Array<number>
 }
 
 export class KnnClassifier {
@@ -18,7 +18,7 @@ export class KnnClassifier {
 
     classify(input: User) {
         const distances = this.trainingData.map(user => ({
-            distance: this.calculateDistance(input.interests_id, user.interests_id),
+            distance: this.calculateDistance(input.interests, user.interests),
             user_id: user.user_id
         }))
             .sort((a, b) => a.distance - b.distance)
@@ -34,11 +34,11 @@ export class KnnClassifier {
     }
 }
 
-export function Main(users: Array<User>) {
+export function TraerUsersCercanos(users: Array<User>) {
     const classifier = new KnnClassifier(5);
     users.forEach(user => classifier.train(user));
 
-    const newUser: User = { interests_id: [1, 2, 4] };
+    const newUser: User = { interests: [1, 2, 4] };
     const result = classifier.classify(newUser);
-    console.log("Los IDs más cercanos son:", result);
+    return result
 }
