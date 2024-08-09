@@ -12,7 +12,7 @@ import { validateSchema } from '../middlewares/validateSchema';
 // Controladores
 import { loginUser, registerUser, validarToken } from '../controller/auth.controller';
 import { deleteUser, getManyUsers, getOneUser, updateUser } from '../controller/user.controller';
-import { getInterestByType, getTypeInterest, getUserInterestRoute, registerInterest } from '../controller/interests.controller';
+import { getInterestByType, getInterestWithType, getTypeInterest, getUserInterestRoute, registerInterest } from '../controller/interests.controller';
 import { createLike, getLikes, checkLikeExists } from '../controller/like.controller';  // Importa el nuevo controlador
 
 // Schemas
@@ -44,6 +44,10 @@ router.route('/interest-type')
   .all(authToken)
   .get(getTypeInterest);
 
+router.route('/interesWithtype')
+  .all(authToken)
+  .get(getInterestWithType);
+
 router.route('/interests')
 	.all(authToken)
 	.get(getInterestByType)
@@ -51,6 +55,7 @@ router.route('/interests')
 router.route('/register-interest/:id')
   .all(authToken)
   .post(registerInterest);
+  
 
 router.route('/like')
   .all(authToken)

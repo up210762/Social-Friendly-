@@ -96,3 +96,17 @@ export const selectInterestsService = async (userId: number, interestId: number)
     const [res] = await conn.query(SQL, [userId,interestId]);
     return res;
 }
+
+export const selectInterestsWithType = async () =>{
+    const SQL = `SELECT 
+    id_interest_type, 
+    GROUP_CONCAT(interest_name ORDER BY id ASC) AS interests 
+    FROM 
+    ${MAIN_DB_PREFIX}tc_interest_name 
+    GROUP BY 
+    id_interest_type;
+    `;
+    const [res] = await conn.query(SQL);
+    console.log(res);
+    return res;
+}

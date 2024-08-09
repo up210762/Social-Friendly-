@@ -5,7 +5,8 @@ import { getInterestsByTypeService,
     getTypeInterestsService,
     getUsersInCommonService,
     getUsersInterestsService,
-    selectInterestsService } from '../services/interests';
+    selectInterestsService, 
+    selectInterestsWithType} from '../services/interests';
 import {TraerUsersCercanos } from '../services/knnClassifier';
 import { any } from 'zod';
 
@@ -33,6 +34,24 @@ export async function getTypeInterest(req: Request, res: Response) {
         res.status(404).json({ message: "Types not found" });
         return;
     }
+
+    res.json(types);
+
+}
+
+export async function getInterestWithType(req: Request, res: Response) {
+    const types: any = await selectInterestsWithType();
+
+    // Verifica si hay resultados
+    if (!types || types.length === 0) {
+        res.status(404).json({ message: "Types not found" });
+        return;
+    }
+
+    // Recorre cada tipo de interés y convierte la cadena a un array
+    types.forEach((type: any) => {
+        type.interests = type.interests.split(',');
+    });
 
     res.json(types);
 
