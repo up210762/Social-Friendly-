@@ -6,6 +6,8 @@ import Navbar from './components/Navbar';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import useAuth from './hooks/useAuth';
 import PerfilUsuario from './pages/PerfilUsuario';
+import { ToastContainer, toast } from 'react-toastify'; // Importar ToastContainer y toast
+import 'react-toastify/dist/ReactToastify.css'; // Estilos por defecto
 
 function App() {
   const { isAuth } = useAuth();
@@ -15,7 +17,7 @@ function App() {
       <header>
         <Navbar />
       </header>
-      <main >
+      <main>
         <Routes>
           <Route index element={
             <ProtectedRoutes restrict={!isAuth} redirectTo='/login'>
@@ -23,28 +25,32 @@ function App() {
             </ProtectedRoutes>
           } />
           <Route path='user' element={
-            <ProtectedRoutes restrict={ !isAuth } redirectTo='/login'>
+            <ProtectedRoutes restrict={!isAuth} redirectTo='/login'>
               <PerfilUsuario />
             </ProtectedRoutes>
           } />
-
           <Route element={<ProtectedRoutes restrict={isAuth} redirectTo='/' />}>
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
           </Route>
-
           <Route path='*' element={<h1>Not Found!!!!</h1>} />
-
         </Routes>
       </main>
-      {/* <footer className="footer mt-auto py-3 bg-primary">
-        <div className="container text-center">
-          <span className="text-muted">© 2024 BoostWash</span>
-        </div>
-      </footer> */}
+      {/* Agregar ToastContainer aquí */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
-  )
+  );
 }
-
 
 export default App;
