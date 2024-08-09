@@ -13,8 +13,7 @@ from src.utils.Logger import Logger
 try:
     app = Flask(__name__)
     
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-    CORS(app, resources={r"/delete/input-files/.*\.csv$": {"origins": "http://localhost:3000", "methods": ["DELETE"]}})
+    CORS(app, resources={r"/*": {"origins": "http://backend-express:3000"}})
     
     def init_app(config):
         try:

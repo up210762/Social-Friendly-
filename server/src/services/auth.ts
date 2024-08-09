@@ -1,7 +1,7 @@
 import { RowDataPacket } from 'mysql2';
 import { encryptPass } from './hash';
 import { format } from '@formkit/tempo';
-import { MAIN_DB_PREFIX } from '../keys';
+import { API_URL, MAIN_DB_PREFIX } from '../keys';
 import conn from '../db';
 
 /**
@@ -41,14 +41,14 @@ export const createOne = async ({ fullname, username, email, password, birthday 
 
   await conn.execute(createProfile, [resp['insertId'], null, null, null, null])
 
-  // const apiUrl = `${API_URL}create-directory/${resp['insertId']}`
+  const apiUrl = `${API_URL}create-directory/${resp['insertId']}`
 
-  // const respAPI = await fetch(apiUrl, {
-  //   method: 'POST'
-  // })
+  const respAPI = await fetch(apiUrl, {
+    method: 'POST'
+  })
 
-  // if (respAPI.ok)
-  //   return resp;
+  if (respAPI.ok)
+    return resp;
 
   return resp;
 };

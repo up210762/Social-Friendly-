@@ -49,21 +49,29 @@ export const getUsersInCommonService = async (user_id:number, ids: any) => {
 //Ya quedó funcional
 export const getTypeInterestsService = async () => {
     //Crear la sentencia 
-    const SQL = `SELECT name 
+    const SQL = `SELECT id, name 
     FROM ${MAIN_DB_PREFIX}tc_type_interest`;
     const res = await conn.query(SQL);
     return res;
 }
 //Ya quedó funcional
-export const getInterestsByTypeService = async (interestId: any) => {
+export const getInterestsByTypeService = async () => {
+    const [interests]:Array<any> = await getTypeInterestsService();
+    const arrayInterest:any = []
+    for (let interest of interests) {
+        console.log(interest)
+    }
+    await interests.map(async (interest:any) => {
+        const SQL = `SELECT
+	    tin.interest_name
+        FROM ${MAIN_DB_PREFIX}tc_interest_name tin 
+        LEFT JOIN ${MAIN_DB_PREFIX}tc_type_interest tti
+        ON tin.id_interest_type = tti.id
+        WHERE tin.id_interest_type = ?;`;
+        const [res] = await conn.query(SQL, [interest.id]);
+        arrayInterest.push({[`${interest.id}`]:res})
+    })
     //Crear la sentencia 
-    const SQL = `SELECT
-	tin.id,
-	tin.interest_name
-    FROM ${MAIN_DB_PREFIX}tc_interest_name tin 
-    LEFT JOIN ${MAIN_DB_PREFIX}tc_type_interest tti
-    ON tin.id_interest_type = tti.id
-    WHERE tin.id_interest_type = ${interestId};`;
     /*
     SELECT
     tin.interest_name
@@ -74,9 +82,8 @@ export const getInterestsByTypeService = async (interestId: any) => {
     */
 
     //console.log("Si está entrando");
-    const res = await conn.query(SQL, [interestId]);
     //console.log(res);
-    return res;
+    return await arrayInterest;
 }
 
 export const selectInterestsService = async (userId: number, interestId: number) => {
@@ -84,8 +91,8 @@ export const selectInterestsService = async (userId: number, interestId: number)
     const SQL = `INSERT INTO 
     ${MAIN_DB_PREFIX}tr_user_interest
     (user_id, interest_id) VALUES
-    (${userId}, ${interestId})
+    (?,?)
     `;
-    const [res] = await conn.query(SQL, [interestId]);
+    const [res] = await conn.query(SQL, [userId,interestId]);
     return res;
 }

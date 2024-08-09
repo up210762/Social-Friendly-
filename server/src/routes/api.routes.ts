@@ -44,7 +44,7 @@ router.route('/interest-type')
   .all(authToken)
   .get(getTypeInterest);
 
-router.route('/interest/:id')
+router.route('/interests')
 	.all(authToken)
 	.get(getInterestByType)
 

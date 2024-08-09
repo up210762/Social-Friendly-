@@ -1,5 +1,6 @@
 // Dependencias
 import app from './app';
+import { API_URL } from './keys';
 
 async function main () {
 	try {

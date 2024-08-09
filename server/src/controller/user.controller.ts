@@ -4,6 +4,7 @@ import { getUserService, getUsersService, deleteUserService, updateUserService }
 import { encryptPass } from '../services/hash';
 import { verify } from 'jsonwebtoken';
 import { JWT_SECRET } from '../keys';
+import { readSync } from 'fs';
 
 export async function getOneUser(req: Request, res: Response) {
     const authHeader = req.headers['authorization'];
@@ -27,9 +28,9 @@ export async function getOneUser(req: Request, res: Response) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.json(user);
+        return res.json(user);
     } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
+        return res.status(401).json({ message: "Invalid token" });
     }
 }
 
@@ -57,8 +58,10 @@ export async function getManyUsers(req: Request, res: Response) {
         }
 
         res.json(users);
+        return;
     } catch (error) {
         res.status(401).json({ message: "Invalid token" });
+        return;
     }
 }
 
@@ -88,14 +91,18 @@ export async function updateUser(req: Request, res: Response) {
         if (typeof resp === 'boolean') {
             if (resp === true) {
                 res.json({ message: "Usuario actualizado" });
+                return;
             } else {
                 res.status(404).json({ message: "El usuario no existe." });
+                return;
             }
         } else {
             res.status(500).json({ message: resp });
+            return;
         }
     } catch (error) {
         res.status(401).json({ message: "Invalid token" });
+        return;
     }
 }
 
@@ -116,8 +123,8 @@ export async function deleteUser(req: Request, res: Response) {
         const decoded: any = verify(token, JWT_SECRET);
         const userId = decoded.id;
         const resp = await deleteUserService(userId);
-        res.status(200).json({ message: resp });
+        return res.status(200).json({ message: resp });
     } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
+        return res.status(401).json({ message: "Invalid token" });
     }
 }

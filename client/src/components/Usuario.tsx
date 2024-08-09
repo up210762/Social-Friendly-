@@ -66,17 +66,12 @@ const Usuario: React.FC<UsuarioProps> = ({
               borderRadius: '100px',
               borderStyle: 'solid',
             }}
-            onClick={() => {
-              setModalImagesDisplay(!modalImagesDisplay);
-              console.log("Click");
-            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'grey'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'white'
-            }}
-            alt="" />
+            }}/>
         </div>
       </div>
       <div className="datos" style={{
@@ -136,7 +131,27 @@ const Usuario: React.FC<UsuarioProps> = ({
               justifyContent: 'left',
               fontSize: '20px',
             }}>Intereses: {intereses}</p>
-          <button></button>
+          <img src="/public/default/plus.png"
+            width="30"
+            height="30"
+            style={{
+              textAlign: 'center',
+              fontSize: '1.125rem',
+              textAnchor: 'middle',
+              backgroundColor: 'white',
+              borderRadius: '100px',
+              borderStyle: 'solid',
+            }}
+            onClick={() => {
+              setModalImagesDisplay(!modalImagesDisplay);
+              console.log("Click");
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'grey'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'white'
+            }}/>
         </div>
         <p style={
           {
