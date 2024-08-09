@@ -6,23 +6,24 @@ import { KnnClassifier } from '../services/knnClassifier';
 
 export async function getUserInterest(req: Request, res: Response) {
     const user_id: number = parseInt(req.params.id!);
-    const interests: Array<number> = req.body.interests;
-    const interestArray: Array<any> = []
     const users = new KnnClassifier(20);
 
-    interests.map(interestId => {
-        const interest = getUsersInterestsService(user_id, interestId);
-        interestArray.push(interest);
+    const usersInfo: any = await getUsersInterestsService(user_id)
+    usersInfo.forEach((interest: any) => {
+        users.train(interest);
     });
+        
 
-    if (!interestArray) {
-        res.json({ message: "Sin intereses" });
-        return
-    }
+    // if (!interestArray) {
+    //     res.json({ message: "Sin intereses" });
+    //     return
+    // }
 
 
     
-    res.json(interestArray);
+    res.json(usersInfo);
+    console.log(usersInfo)
+    return
 }
 
 export async function getTypeInterest(req: Request, res: Response) {
@@ -45,7 +46,7 @@ export async function getInterest(req: Request, res: Response) {
     }
 
     try {
-        const result = await getInterestsService(userId)
+        const [result]: any = await getInterestsService(userId)
 
         if (!result) {
             res.json({ message: "No hay información."});

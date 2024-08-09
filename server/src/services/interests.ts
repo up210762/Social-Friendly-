@@ -1,19 +1,19 @@
 import conn from '../db';
 import { MAIN_DB_PREFIX, PATH_DEFAULT_IMAGE } from '../keys';
 
-export const getUsersInterestsService = async (userId: number, interestId: number) => {
+export const getUsersInterestsService = async (userId: number) => {
     //Crear la sentencia 
     const SQL = `SELECT
     tui.user_id, tui.interest_id
     FROM ${MAIN_DB_PREFIX}tr_user_interest tui 
     LEFT JOIN ${MAIN_DB_PREFIX}tr_user tu
-    ON tu.id = tp.id_user
+    ON tui.user_id = tu.id
     LEFT JOIN ${MAIN_DB_PREFIX}tr_profile tp
-    ON tu.id = tui.user_id
-    WHERE tu.id <> ${userId} AND tui.interest_id = ${interestId};`;
+    ON tu.id = tp.id_user
+    WHERE tu.id <> ?;`;
 
-    const [res] = await conn.query(SQL, [userId]);
-    return res;
+    const res = await conn.query(SQL, [userId]);
+    return res[0];
 }
 
 export const getTypeInterestsService = async () => {
@@ -31,8 +31,8 @@ export const getInterestsService = async (interestId: any) => {
     tin.interest_name
     FROM ${MAIN_DB_PREFIX}tc_interest_name tin 
     LEFT JOIN ${MAIN_DB_PREFIX}tc_type_interest tti
-    ON tin.interest_type = tti.id
-    WHERE tin.id_interest_type = ${interestId}`;
+    ON tin.id_interest_type = tti.id
+    WHERE tin.id_interest_type=?`;
 
     const [res] = await conn.query(SQL, [interestId]);
     return res;
@@ -43,7 +43,7 @@ export const selectInterestsService = async (userId: number, interestId: number)
     const SQL = `INSERT INTO 
     ${MAIN_DB_PREFIX}tr_user_interest tui 
     (user_id, interest_id) VALUES
-    (${userId}, ${interestId})
+    (?,?)
     `;
     const [res] = await conn.query(SQL, [interestId]);
     return res;
