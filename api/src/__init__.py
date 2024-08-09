@@ -8,8 +8,6 @@ from .routes.Files import (CreateUserDirectoryRoute, DownloadFilesRoute,
                            UploadImageRoutes,
                            DeleteFilesRoute)
 
-from .routes import TestApiRoute
-
 from src.utils.Logger import Logger
 
 try:
@@ -28,7 +26,6 @@ try:
             app.register_blueprint(UploadImageRoutes.main, url_prefix='/api/upload-image/<id>')
             app.register_blueprint(DownloadFilesRoute.main, url_prefix='/api/download/<path>/<file>')
             app.register_blueprint(DeleteFilesRoute.main, url_prefix='/api/delete-file/<filename>')
-            app.register_blueprint(TestApiRoute.main, url_prefix='/api/test-api')
             
             return app
         except Exception as ex:

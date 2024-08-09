@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+const initialValues = {
+    interestId: []
+}
 
 const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose }) => {
     const [selectedInterestType, setSelectedInterestType] = useState<string>('');
     const [selectedInterests, setSelectedInterests] = useState<Set<string>>(new Set());
+    const [formData, setFormData] = useState(initialValues);
 
     const interestTypes = [
         { id: '1', name: 'Actividad Física' },
@@ -20,6 +24,11 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
         // Añade más intereses específicos según el tipo
     };
 
+    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {} catch (err) {}
+    }
+
     const handleInterestTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedInterestType(event.target.value);
         setSelectedInterests(new Set()); // Limpiar selecciones cuando cambie el tipo
@@ -33,6 +42,7 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
             } else {
                 newSelection.add(interest);
             }
+            console.log(newSelection)
             return newSelection;
         });
     };
@@ -65,6 +75,7 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                                 <div>X</div>
                             </button>
                         </div>
+                        <form onSubmit={handleOnSubmit}></form>
                         <div className="modal-body">
                             {/* Menú de selección de tipo de interés */}
                             <div className="form-group">
@@ -93,7 +104,7 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                                             <div key={index} className="form-check">
                                                 <input
                                                     type="checkbox"
-                                                    id={`interest-${index}`}
+                                                    id={`${index}`}
                                                     className="form-check-input"
                                                     checked={selectedInterests.has(interest)}
                                                     onChange={() => handleCheckboxChange(interest)}
@@ -107,6 +118,7 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                                 </div>
                             )}
                         </div>
+                        <button>Agregar intereses</button>
                     </div>
                 </div>
             </div>
