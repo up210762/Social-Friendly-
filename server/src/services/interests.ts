@@ -27,22 +27,16 @@ export const getTypeInterestsService = async () => {
     return res;
 }
 //Ya quedó funcional
-export const getInterestsByTypeService = async () => {
-    const [interests]:Array<any> = await getTypeInterestsService();
-    const arrayInterest:any = []
-    for (let interest of interests) {
-        console.log(interest)
-    }
-    await interests.map(async (interest:any) => {
-        const SQL = `SELECT
-	    tin.interest_name
-        FROM ${MAIN_DB_PREFIX}tc_interest_name tin 
-        LEFT JOIN ${MAIN_DB_PREFIX}tc_type_interest tti
-        ON tin.id_interest_type = tti.id
-        WHERE tin.id_interest_type = ?;`;
-        const [res] = await conn.query(SQL, [interest.id]);
-        arrayInterest.push({[`${interest.id}`]:res})
-    })
+export const getInterestsByTypeService = async (interestId: number) => {
+    const SQL = `SELECT
+    tin.id, 
+	tin.interest_name
+    FROM ${MAIN_DB_PREFIX}tc_interest_name tin 
+    LEFT JOIN ${MAIN_DB_PREFIX}tc_type_interest tti
+    ON tin.id_interest_type = tti.id
+    WHERE tin.id_interest_type = ?;`;
+    
+
     //Crear la sentencia 
     /*
     SELECT
@@ -55,7 +49,7 @@ export const getInterestsByTypeService = async () => {
 
     //console.log("Si está entrando");
     //console.log(res);
-    return await arrayInterest;
+    return await conn.query(SQL, [interestId])
 }
 
 export const selectInterestsService = async (userId: number, interestId: number) => {

@@ -3,8 +3,10 @@ services:
     build:
       context: ./api
     container_name: backend-python
+    volumes:
+      - ./api/:/api/
     ports:
-      - "5000:5000"
+      - 5000:5000
     networks:
       - social_friendly
     depends_on:
@@ -14,8 +16,10 @@ services:
     build:
       context: ./server
     container_name: backend-express
+    volumes:
+      - ./server/:/server/
     ports:
-      - "3000:3000"
+      - 3000:3000
     networks:
       - social_friendly
     depends_on:
@@ -25,8 +29,10 @@ services:
     build:
       context: ./client
     container_name: frontend-react
+    volumes:
+      - ./client/:/client/
     ports:
-      - "80:5173"
+      - 80:5173
     depends_on:
       - backend-python
       - backend-express
@@ -35,7 +41,7 @@ services:
     image: mysql:8.0
     container_name: db
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: "${SET_ROOT_PASSWORD:-root}"
       MYSQL_DATABASE: "${DB_NAME:-db_social_friendly}"

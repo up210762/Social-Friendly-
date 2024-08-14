@@ -40,7 +40,7 @@ router.route('/user-interest/:id')
 	.all(authToken)
 	.get(getUserInterestRoute)
 
-router.route('/interest-type')
+router.route('/interest-types')
   .all(authToken)
   .get(getTypeInterest);
 

@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalUploadImages from "./ModalImages";
+import { getToken } from "../services/localStorage";
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 interface UsuarioProps {
   nombre: string | undefined;
@@ -20,7 +23,48 @@ const Usuario: React.FC<UsuarioProps> = ({
   fechaNacimiento,
   fotoUrl,
 }) => {
+  const [selectedInterests, setSelectedInterests] = useState<Set<string>>(new Set());
+  const [interestTypes, setInterestTypes] = useState<any>()
+  const [interestsByType, setInterestsByType] = useState<any>()
   const [modalImagesDisplay, setModalImagesDisplay] = useState(false);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}interest-types`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${getToken()}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setInterestTypes(data);
+      })
+      .catch(error => {
+        console.error('Error fetching interest types:', error);
+      });
+  }, []);
+
+  // Solicitar intereses específicos cuando se selecciona un tipo de interés
+  useEffect(() => {
+    fetch(`${BASE_URL}interests`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${getToken()}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setInterestsByType(data);
+        setSelectedInterests(new Set());  // Limpiar selecciones al cambiar de tipo
+      })
+      .catch(error => {
+        console.error('Error fetching interests:', error);
+      });
+  }, []);
+  
+  if (!interestsByType || !interestTypes)
+    return
+
   return (
     <div className="usuario" style={{
       margin: 5,
@@ -30,7 +74,7 @@ const Usuario: React.FC<UsuarioProps> = ({
       <div
         className="foto d-flex justify-content-center"
       >
-        <ModalUploadImages showModal={modalImagesDisplay} onClose={() => setModalImagesDisplay(false)} />
+        <ModalUploadImages showModal={modalImagesDisplay} onClose={() => setModalImagesDisplay(false)} giveInterestTypes={interestTypes!} giveInterestsByType={interestsByType!} />
         <img
           src={fotoUrl}
           className="d-block user-select-none"
@@ -71,7 +115,7 @@ const Usuario: React.FC<UsuarioProps> = ({
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'white'
-            }}/>
+            }} />
         </div>
       </div>
       <div className="datos" style={{
@@ -144,14 +188,13 @@ const Usuario: React.FC<UsuarioProps> = ({
             }}
             onClick={() => {
               setModalImagesDisplay(!modalImagesDisplay);
-              console.log("Click");
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'grey'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'white'
-            }}/>
+            }} />
         </div>
         <p style={
           {

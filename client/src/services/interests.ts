@@ -26,8 +26,8 @@ export const getUserType = async () => {
   return res.json();
 };
 
-export const getInterests = async () => {
-  const USER_URL = new URL('interests', BASE_URL);
+export const getInterests = async (interstId: number) => {
+  const USER_URL = new URL(`interests/${interstId}`, BASE_URL);
 
   const res = await fetch(USER_URL, {
     method: 'GET',

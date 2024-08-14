@@ -1,85 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { getInterests, getUserType } from '../services/interests';
-const initialValues = {
-    interestId: []
-}
+import React, { useState, useEffect, FormEvent } from 'react';
 
-const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose }) => {
-    const [selectedInterestType, setSelectedInterestType] = useState<any>('');
+const ModalUploadImages: React.FC<ModalInterestProps> = ({ showModal, onClose, giveInterestTypes, giveInterestsByType }) => {
+    const [interestTypes, setInterestTypes] = useState<{ id: string; name: string }[]>([]);
+    const [selectedInterestType, setSelectedInterestType] = useState<string>('');
+    const [interestsByType, setInterestsByType] = useState<{ id: string; name: string }[]>([]);
     const [selectedInterests, setSelectedInterests] = useState<Set<string>>(new Set());
-    const [interestTypes, setInterestTypes] = useState<Array<any>>();
-    const [specificInterest, setSpecificInterest] = useState<Array<any>>();
-    const [formData, setFormData] = useState(initialValues);
-    //let interestTypes: Array<any> = []
-
-    const getInterestType = async () => {
-        const res = await getUserType();
-        setInterestTypes(res);
-    }
-
-    const getInterestsByType = async () => {
-        const res = await getInterests();
-        console.log(res)
-        setSpecificInterest(res);
-    }
 
     useEffect(() => {
-        getInterestType()
-        getInterestsByType()
-    }, []);
-    // [
-    //     { id: '1', name: 'Actividad Física' },
-    //     { id: '2', name: 'Entretenimiento' },
-    //     { id: '3', name: 'Música' },
-    //     { id: '4', name: 'Videojuegos' },
-    //     // Añade más tipos de interés según sea necesario
-    // ];
-    if (!specificInterest) return;
-
-    if (!interestTypes) return;
-
-    // const interestsByType: Record<string, string[]> = {
-    //     '1': ['Correr', 'Gimnasio', 'Ciclismo'],
-    //     '2': ['Cine', 'Teatro', 'Conciertos'],
-    //     '3': ['Rock', 'Pop', 'Jazz'],
-    //     '4': ['FPS', 'RPG', 'MOBA'],
-    //     // Añade más intereses específicos según el tipo
-    // };
-
-    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            interestTypes.map(interest => {
-                console.log(interest);
-            })
-            onClose()
-
-        } catch (err) {
-            console.log(err);
+        if (interestTypes.length === 0 || interestsByType.length === 0) {
+            setInterestTypes(giveInterestTypes)
+            setInterestsByType(giveInterestsByType)
         }
-    }
+    }, [])
 
     const handleInterestTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedInterestType(event.target.id);
-        setSelectedInterests(new Set()); // Limpiar selecciones cuando cambie el tipo
+        setSelectedInterestType(event.target.value);
     };
 
-    const handleCheckboxChange = async (interest: string) => {
+    const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault();
+            if (selectedInterests.size > 0)
+                console.log(selectedInterests);
+            else
+                alert("Selecciona mínimo un interés.");
+        } catch (error) {}
+    }
+
+    const handleCheckboxChange = (interestId: string) => {
         setSelectedInterests(prev => {
             const newSelection = new Set(prev);
-            console.log(newSelection.size)
-            if (newSelection.has(interest)) {
-                newSelection.delete(interest);
+            if (newSelection.has(interestId)) {
+                newSelection.delete(interestId);
             } else {
-                if (newSelection.size <= 2) {
-                    newSelection.add(interest);
+                if (newSelection.size < 3) {
+                    newSelection.add(interestId);
+                } else {
+                    alert("Límite máximo alcanzado!")
                 }
             }
             return newSelection;
         });
     };
 
-    if (!interestTypes)
+
+    if (!interestsByType || interestsByType.length === 0 || !interestTypes)
         return
 
     return (
@@ -93,26 +58,26 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                 className={`modal ${showModal ? "show" : ""}`}
                 style={{ display: showModal ? "block" : "none", zIndex: showModal ? 1050 : -1 }}
             >
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header d-flex justify-content-between">
-                            <h5>Imágenes</h5>
-                            <button
-                                type="button"
-                                className="close"
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'grey'
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'white'
-                                }}
-                                onClick={onClose}>
-                                <div>X</div>
-                            </button>
-                        </div>
-                        <form onSubmit={handleOnSubmit}>
+                <form onSubmit={handleOnSubmit} method="post">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h5>Seleccionar Intereses</h5>
+                                <button
+                                    type="button"
+                                    className="close"
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.backgroundColor = 'grey'
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.backgroundColor = 'white'
+                                    }}
+                                    onClick={onClose}>
+                                    <div>X</div>
+                                </button>
+                            </div>
                             <div className="modal-body">
-                                {/* Menú de selección de tipo de interés */}
+                                Menú de selección de tipo de interés
                                 <div className="form-group">
                                     <label htmlFor="interestType">Tipo de Interés</label>
                                     <select
@@ -133,19 +98,19 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                                 {/* Checkboxes para intereses específicos */}
                                 {selectedInterestType && (
                                     <div className="form-group">
-                                        <label>Intereses</label>
+                                        <label>Intereses Específicos</label>
                                         <div>
-                                            {specificInterest[selectedInterestType]?.map((interest:any, index:any) => (
-                                                <div key={index} className="form-check">
+                                            {interestsByType.map((interest: any) => (
+                                                <div key={interest[parseInt(selectedInterestType) - 1].id} className="form-check">
                                                     <input
                                                         type="checkbox"
-                                                        id={`${index}`}
+                                                        id={`${interest[parseInt(selectedInterestType) - 1].id}`}
                                                         className="form-check-input"
-                                                        checked={selectedInterests.has(interest)}
-                                                        onChange={() => handleCheckboxChange(interest)}
+                                                        checked={selectedInterests.has(interest[parseInt(selectedInterestType) - 1].id)}
+                                                        onChange={() => handleCheckboxChange(interest[parseInt(selectedInterestType) - 1].id)}
                                                     />
-                                                    <label htmlFor={`interest-${index}`} className="form-check-label">
-                                                        {interest}
+                                                    <label htmlFor={`${interest[parseInt(selectedInterestType) - 1].id}`} className="form-check-label">
+                                                        {interest[parseInt(selectedInterestType) - 1].interest_name}
                                                     </label>
                                                 </div>
                                             ))}
@@ -153,10 +118,10 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
                                     </div>
                                 )}
                             </div>
-                            <button type='submit'>Agregar intereses</button>
-                        </form>
+                            <button type="submit" style={{ border: 'none' }}>Seleccionar</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </>
     );
@@ -164,7 +129,9 @@ const ModalUploadImages: React.FC<ModalUserUpdateProps> = ({ showModal, onClose 
 
 export default ModalUploadImages;
 
-interface ModalUserUpdateProps {
+interface ModalInterestProps {
+    giveInterestTypes: Array<any>;
+    giveInterestsByType: Array<any>;
     showModal: boolean;
     onClose: () => void;
 }
