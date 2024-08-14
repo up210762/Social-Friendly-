@@ -34,8 +34,8 @@ export class KnnClassifier {
     }
 }
 
-export function TraerUsersCercanos(users: Array<User>) {
-    const classifier = new KnnClassifier(5);
+export function TraerUsersCercanos(users: Array<User>, k: number) {
+    const classifier = new KnnClassifier(k);
     users.forEach(user => classifier.train(user));
 
     const newUser: User = { interests: [1, 2, 4] };
