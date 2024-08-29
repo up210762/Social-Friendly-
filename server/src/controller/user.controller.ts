@@ -1,6 +1,6 @@
 // src/controllers/user.controller.ts
 import { Request, Response } from 'express';
-import { getUserService, getUsersService, deleteUserService, updateUserService } from '../services/users';
+import { getUserService, getUsersService, deleteUserService, updateUserService, getRolService } from '../services/users';
 import { encryptPass } from '../services/hash';
 import { verify } from 'jsonwebtoken';
 import { JWT_SECRET } from '../keys';
@@ -18,6 +18,8 @@ export async function getOneUser(req: Request, res: Response) {
     if (!token) {
         return res.status(401).json({ message: "Token is missing" });
     }
+
+    
 
     try {
         const decoded: any = verify(token, JWT_SECRET);
@@ -126,5 +128,36 @@ export async function deleteUser(req: Request, res: Response) {
         return res.status(200).json({ message: resp });
     } catch (error) {
         return res.status(401).json({ message: "Invalid token" });
+    }
+}
+
+export const getRol = async (req: Request, res: Response) => {
+    const authHeader = req.headers['authorization'];
+
+    if (typeof authHeader !== 'string' || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "No authorization header" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "Token is missing" });
+    }
+
+    try {
+        const decoded: any = verify(token, JWT_SECRET);
+        const userId = decoded.id;
+        const [resp] = await getRolService(userId);
+        console.log(resp)
+        if (!resp)
+            return res.status(400).json({ message: "Error en la petición." })
+        else {
+            if (resp.rol === "Admin" || resp.rol === "Dev")
+                return res.json({ message: 'true' })
+            else 
+                return res.json({ message: 'false' })
+        }
+    } catch (err) {
+        return res.status(500).json({ message: "Error del servidor." })
     }
 }

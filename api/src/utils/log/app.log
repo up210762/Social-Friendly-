@@ -3,3 +3,39 @@
     os.mkdir(path)
 FileExistsError: [Errno 17] File exists: 'images/@isaacn'
 
+2024-08-17 21:03:23 | ERROR | Traceback (most recent call last):
+  File "/home/d2023f/Documentos/Programación/Eje/Social-Friendly-/api/src/__init__.py", line 29, in init_app
+    app.register_blueprint(DeleteFilesRoute.main, url_prefix='/api/test')
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/scaffold.py", line 50, in wrapper_func
+    return f(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/app.py", line 1299, in register_blueprint
+    blueprint.register(self, options)
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/blueprints.py", line 384, in register
+    raise ValueError(
+ValueError: The name 'delete_files_blueprint' is already registered for this blueprint. Use 'name=' to provide a unique name.
+
+2024-08-18 13:25:12 | ERROR | Traceback (most recent call last):
+  File "/home/d2023f/Documentos/Programación/Eje/Social-Friendly-/api/src/__init__.py", line 36, in init_app
+    app.register_blueprint(TestDelete.main, url_prefix='/api/api-auth')
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/scaffold.py", line 50, in wrapper_func
+    return f(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/app.py", line 1299, in register_blueprint
+    blueprint.register(self, options)
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/blueprints.py", line 384, in register
+    raise ValueError(
+ValueError: The name 'test_delete_blueprint' is already registered for this blueprint. Use 'name=' to provide a unique name.
+
+2024-08-18 14:46:45 | ERROR | Traceback (most recent call last):
+  File "/home/d2023f/Documentos/Programación/Eje/Social-Friendly-/api/src/__init__.py", line 36, in init_app
+    app.register_blueprint(TestDelete.main, url_prefix='/api/api-auth')
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/scaffold.py", line 50, in wrapper_func
+    return f(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/app.py", line 1299, in register_blueprint
+    blueprint.register(self, options)
+  File "/home/d2023f/.local/lib/python3.12/site-packages/flask/blueprints.py", line 384, in register
+    raise ValueError(
+ValueError: The name 'test_delete_blueprint' is already registered for this blueprint. Use 'name=' to provide a unique name.
+

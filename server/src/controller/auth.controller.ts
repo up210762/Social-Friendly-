@@ -57,7 +57,9 @@ export const loginUser: RequestHanddleLogin = async (req, res) => {
 		return res.status(403).json({message: 'Invalid Auth'});
 	
 	// Generarión de JWT
-	const token = generateToken({id: user.id});
+	const token = generateToken({id: user.id, rol: user.rol});
+
+	
 
 	// Respuesta al Cliente
 	return res.json({token});

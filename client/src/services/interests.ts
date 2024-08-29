@@ -48,6 +48,29 @@ export const getInterests = async (interstId: number) => {
   return res.json();
 };
 
+export const registerInterestService = async (interests: any) => {
+  const INTERESTS_URL = new URL(`register-interest`, BASE_URL)
+  const interestArray:any = [];
+  interests.forEach((interest:any) => {
+    interestArray.push(interest);
+  })
+  const res = await fetch(INTERESTS_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${getToken()}`
+    },
+    body: JSON.stringify({
+      interests: interestArray
+    })
+  });
+
+  if (!res.ok)
+    return 400
+  else 
+    return 200
+}
+
 export const getLikes = async () => {
   const LIKE_URL = new URL('likes', BASE_URL);
 

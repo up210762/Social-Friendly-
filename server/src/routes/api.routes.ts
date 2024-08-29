@@ -11,12 +11,13 @@ import { validateSchema } from '../middlewares/validateSchema';
 
 // Controladores
 import { loginUser, registerUser, validarToken } from '../controller/auth.controller';
-import { deleteUser, getManyUsers, getOneUser, updateUser } from '../controller/user.controller';
+import { deleteUser, getManyUsers, getOneUser, getRol, updateUser } from '../controller/user.controller';
 import { getInterestByType, getInterestWithType, getTypeInterest, getUserInterestRoute, registerInterest } from '../controller/interests.controller';
 import { createLike, getLikes, checkLikeExists } from '../controller/like.controller';  // Importa el nuevo controlador
 
 // Schemas
 import { UserLoginSchema, UserRegisterSchema } from '../schemas/UserSchema';
+import { testDeleteMethod, testGetMethod, testPostMethod, testPutMethod } from '../controller/test.controller';
 
 // Instancia del Modulo Router
 const router = Router();
@@ -27,14 +28,14 @@ router.post('/login', validateSchema(UserLoginSchema), loginUser);
 router.post('/auth', authToken, validarToken);
 
 router.route('/user')
-  .all(authToken)
-  .get(getOneUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+.all(authToken)
+.get(getOneUser)
+.patch(updateUser)
+.delete(deleteUser);
 
 router.route('/users')
-  .all(authToken)
-  .get(getManyUsers);
+.all(authToken)
+.get(getManyUsers);
 
 router.route('/user-interest/:id')
 	.all(authToken)
@@ -48,27 +49,37 @@ router.route('/interesWithtype')
   .all(authToken)
   .get(getInterestWithType);
 
-router.route('/interests')
+  router.route('/interests')
 	.all(authToken)
 	.get(getInterestByType)
-
-router.route('/register-interest/:id')
+  
+  router.route('/register-interest')
   .all(authToken)
   .post(registerInterest);
   
-
-router.route('/like')
+  router.route('/test-api-photos')
+  .all(authToken)
+  .get(testGetMethod)
+  .post(testPostMethod)
+  .put(testPutMethod)
+  .delete(testDeleteMethod)
+  
+  router.route('/like')
   .all(authToken)
   .post(createLike);
-
-router.route('/likes')
+  
+  router.route('/likes')
   .all(authToken)
   .get(getLikes);
+  
+  router.route('/rol')
+  .all(authToken)
+  .post(getRol)
 
-// router.route('/likes/check')  // Nueva ruta para verificar si existe un like
-//   .all(authToken)
-//   .get(checkLikeExists);// Añade el controlador para la nueva ruta
-//   //.post(registerInterest);
+  // router.route('/likes/check')  // Nueva ruta para verificar si existe un like
+  //   .all(authToken)
+  //   .get(checkLikeExists);// Añade el controlador para la nueva ruta
+  //   //.post(registerInterest);
 
 router.route('/like')
   .all(authToken)

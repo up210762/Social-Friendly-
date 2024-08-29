@@ -15,7 +15,7 @@ export const DB_PASS = process.env.DB_PASS!;
 export const MAIN_DB_PREFIX = process.env.DB_PREFIX || 'sf_';
 export const PATH_IMAGES = process.env.PATH_IMAGES;
 export const PATH_DEFAULT_IMAGE = process.env.DEFAULT_IMAGE;
-export const API_URL = process.env.API_URL;
+export const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 // Variables para el JWT
 export const JWT_SECRET = process.env.JWT_SERCRET || 'This is a test!';

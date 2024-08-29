@@ -16,7 +16,8 @@ const LikesList: React.FC = () => {
     const fetchLikes = async () => {
       try {
         const data = await getLikes();
-        setLikes(data);
+        if (typeof data === 'object')
+          setLikes(data);
       } catch (error) {
         console.error('Error fetching likes:', error);
       }

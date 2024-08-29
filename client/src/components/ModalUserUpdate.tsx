@@ -4,9 +4,6 @@ import { getOneUser } from "../services/users";
 const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, updateUserForm }) => {
   const [user, setUser] = useState<UserUpdate>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [multipleOptions, setMultipleOptions] = useState<string[]>([]);
-  const [apiOptions, setApiOptions] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -32,16 +29,6 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
     };
   }, [showModal]);
 
-  useEffect(() => {
-    if (selectedOption) {
-      // Reemplaza la URL con la de tu API
-      fetch(`https://api.example.com/options?selected=${selectedOption}`)
-        .then(response => response.json())
-        .then(data => setApiOptions(data))
-        .catch(error => console.error(error));
-    }
-  }, [selectedOption]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     const { name, value } = e.target;
     setUser(prevData => ({
@@ -56,21 +43,6 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
       ...prevData,
       description: value,
     }));
-  };
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(e.target.value);
-  };
-
-  const handleMultipleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const options = e.target.options;
-    const selectedValues: string[] = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selectedValues.push(options[i].value);
-      }
-    }
-    setMultipleOptions(selectedValues);
   };
 
   if (!user) return null;
@@ -185,33 +157,6 @@ const ModalUserUpdate: React.FC<ModalUserUpdateProps> = ({ showModal, onClose, u
                     placeholder="Ingresa tu fecha de nacimiento"
                   />
                 </div>
-
-                {/* Selector desplegable */}
-                <div className="form-group">
-                  <label htmlFor="selectOption">Selecciona una opción:</label>
-                  <select id="selectOption" className="form-control" value={selectedOption} onChange={handleSelectChange}>
-                    <option value="">Seleccione una opción</option>
-                    <option value="option1">Opción 1</option>
-                    <option value="option2">Opción 2</option>
-                    <option value="option3">Opción 3</option>
-                    <option value="option4">Opción 4</option>
-                    <option value="option5">Opción 5</option>
-                  </select>
-                </div>
-
-                {/* Selector múltiple */}
-                {selectedOption && (
-                  <div className="form-group">
-                    <label htmlFor="multipleOptions">Selecciona múltiples opciones:</label>
-                    <select id="multipleOptions" className="form-control" multiple value={multipleOptions} onChange={handleMultipleSelectChange}>
-                      {apiOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
 
                 <div className="d-flex justify-content-end">
                   <button type="button" className="btn btn-primary me-2" onClick={onClose}>

@@ -10,6 +10,23 @@
     10px 0px 10px rgba(56, 54, 54, 0.5);
 }
 
+.content-test {
+    width: 20rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.label-test {
+    width: 15rem;
+}
+
+.button-test {
+    width: 5rem;
+    display: flex;
+    justify-content: center;
+}
+
 .close {
     background: none;
     border: none;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ModalUploadImages from "./ModalImages";
+import ModalUploadImages from "./ModalInterests";
 import { getToken } from "../services/localStorage";
 
 const BASE_URL = 'http://localhost:3000/api/'

@@ -4,6 +4,18 @@ import { MAIN_DB_PREFIX } from '../keys';
 import { verify } from 'jsonwebtoken';
 import { JWT_SECRET } from '../keys';
 
+export const getRolService = async (userId: number) => {
+    const SQL = `SELECT ur.rol FROM ${MAIN_DB_PREFIX}tc_user_rol ur
+    RIGHT JOIN ${MAIN_DB_PREFIX}tr_user u ON u.fk_user_rol = ur.id
+    WHERE u.id=?`;
+    try {
+        const [resp]: any = await conn.query(SQL, [userId]);
+        return resp
+    } catch (err) {
+        return 1
+    }
+}
+
 export const getUserByToken = async (token: string) => {
     try {
         const decoded: any = verify(token, JWT_SECRET);

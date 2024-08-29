@@ -8,6 +8,7 @@ import useAuth from './hooks/useAuth';
 import PerfilUsuario from './pages/PerfilUsuario';
 import { ToastContainer, toast } from 'react-toastify'; // Importar ToastContainer y toast
 import 'react-toastify/dist/ReactToastify.css'; // Estilos por defecto
+import { TestAPI } from './pages/TestAPI';
 
 function App() {
   const { isAuth } = useAuth();
@@ -33,6 +34,11 @@ function App() {
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
           </Route>
+          <Route path='test' element={
+            <ProtectedRoutes restrict={!isAuth} redirectTo='/login'>
+              <TestAPI />
+            </ProtectedRoutes>
+          }></Route>
           <Route path='*' element={<h1>Not Found!!!!</h1>} />
         </Routes>
       </main>

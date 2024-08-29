@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPenToSquare, faRightToBracket, faRightFromBracket, faHome, faUserPen, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPenToSquare, faRightToBracket, faRightFromBracket, faHome, faUserPen, faHeart, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import LikesList from '../components/LikeList'; // Importar el componente LikesList
+import { isAdmin } from '../services/localStorage';
 
 function Navbar() {
   const { isAuth } = useAuth();
   const navigate = useNavigate();
   const [showLikes, setShowLikes] = useState(false);
+  const [charge, setCharge] = useState<boolean>(false)
+  const [admin, setAdmin] = useState<boolean>(false);
+
+  const getAdmin = async () => {
+    const res = await isAdmin();
+    if (res && res.message === "true") {
+      setCharge(true);
+      setAdmin(true);
+    } else {
+      setCharge(true)
+    }
+  }
+
+  useEffect(() => {
+    getAdmin();
+  }, [])
 
   const logout = () => {
     localStorage.removeItem('tokenApp');
@@ -61,7 +78,7 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav me-auto">
               {
-                isAuth && (
+                (isAuth && charge && admin === false) && (
                   <>
                     <li className="nav-item">
                       <NavLink to="/" className="nav-link" style={{ cursor: "pointer" }} >
@@ -71,17 +88,17 @@ function Navbar() {
                     </li>
                     <li className="nav-item" style={{ cursor: "pointer" }} >
                       <NavLink to='/user' className='nav-link'>
-                        <FontAwesomeIcon icon={faUserPen}/> User
+                        <FontAwesomeIcon icon={faUserPen} /> User
                         <span className="visually-hidden">(current)</span>
                       </NavLink>
                     </li>
-                    <li className="nav-item" 
-                        style={{ position: 'relative', cursor: "pointer" }} 
-                        onMouseEnter={() => setShowLikes(true)}
-                        onMouseLeave={() => setShowLikes(false)}
+                    <li className="nav-item"
+                      style={{ position: 'relative', cursor: "pointer" }}
+                      onMouseEnter={() => setShowLikes(true)}
+                      onMouseLeave={() => setShowLikes(false)}
                     >
                       <span className="nav-link">
-                        <FontAwesomeIcon icon={faHeart}/> Likes
+                        <FontAwesomeIcon icon={faHeart} /> Likes
                       </span>
                       {showLikes && (
                         <LikesList />
@@ -94,15 +111,54 @@ function Navbar() {
                 )
               }
               {
-                !isAuth && (
+                (isAuth && charge && admin === true) && (
+                  <>
+                    <li className="nav-item">
+                      <NavLink to="/" className="nav-link" style={{ cursor: "pointer" }} >
+                        <FontAwesomeIcon icon={faHome} /> Inicio
+                        <span className="visually-hidden">(current)</span>
+                      </NavLink>
+                    </li>
+                    <li className="nav-item" style={{ cursor: "pointer" }} >
+                      <NavLink to='/user' className='nav-link'>
+                        <FontAwesomeIcon icon={faUserPen} /> User
+                        <span className="visually-hidden">(current)</span>
+                      </NavLink>
+                    </li>
+                    <li className="nav-item"
+                      style={{ position: 'relative', cursor: "pointer" }}
+                      onMouseEnter={() => setShowLikes(true)}
+                      onMouseLeave={() => setShowLikes(false)}
+                    >
+                      <span className="nav-link">
+                        <FontAwesomeIcon icon={faHeart} /> Likes
+                      </span>
+                      {showLikes && (
+                        <LikesList />
+                      )}
+                    </li>
+                    <li className='nav-item'>
+                      <NavLink to='/test' className='nav-link'>
+                        <FontAwesomeIcon icon={faPaperPlane} /> Test Api Photos
+                        <span className="visually-hidden"></span>
+                      </NavLink>
+                    </li>
+                    <li className="nav-item" style={{ cursor: "pointer" }} onClick={logout}>
+                      <span className="nav-link"><FontAwesomeIcon icon={faRightFromBracket} /> Logout </span>
+                    </li>
+                  </>
+                )
+              }
+              {
+                (!isAuth) && (
                   <>
                     <li className="nav-item dropdown">
-                      <a 
-                        className="nav-link dropdown-toggle" 
-                        data-bs-toggle="dropdown" href="#" 
-                        role="button" aria-haspopup="true" 
+                      <a
+                        className="nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown" href="#"
+                        role="button" aria-haspopup="true"
                         aria-expanded="true">
-                          User <FontAwesomeIcon icon={faUser} />
+                        User <FontAwesomeIcon icon={faUser} />
                       </a>
                       <div className="dropdown-menu " data-bs-popper="static">
                         <NavLink to="/login" className="nav-link">Login <FontAwesomeIcon icon={faRightToBracket} /></NavLink>

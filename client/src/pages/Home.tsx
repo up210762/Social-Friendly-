@@ -89,11 +89,11 @@ const TinderCarousel: React.FC = () => {
           users.map(user => (
             <Carousel.Item key={user.id}>
               <div className="card mx-auto" style={{ width: '18rem' }}>
-                <div className="card-img-top" style={{ 
-                  backgroundColor: 'grey', 
-                  height: '350px', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                <div className="card-img-top" style={{
+                  backgroundColor: 'grey',
+                  height: '350px',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center'
                 }}>
                   <span style={{ color: 'white', fontSize: '24px' }}>Imagen</span>

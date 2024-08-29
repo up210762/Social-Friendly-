@@ -64,9 +64,9 @@ export const getLikes = async () => {
 
   if (!resp.ok) {
     if ([401, 403].includes(resp.status)) {
-      throw new Error("Error de Autentificación");
+      return "Error de Autentificación";
     }
-    throw new Error("No se pudieron obtener los likes. Inténtalo de nuevo.");
+    return "No se pudieron obtener los likes. Inténtalo de nuevo.";
   }
   return resp.json();
 };

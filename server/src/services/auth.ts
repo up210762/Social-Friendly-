@@ -13,9 +13,13 @@ import conn from '../db';
 export const findOneBy = async ({ email, username }: UserSearch) => {
   // Crear la sentencia SQL
   const SQL = `
-    SELECT id, password FROM ${MAIN_DB_PREFIX}tr_user WHERE (username = ? OR email = ?) AND is_active=1;
+    SELECT u.id, ur.rol, u.password 
+    FROM ${MAIN_DB_PREFIX}tr_user u 
+    INNER JOIN ${MAIN_DB_PREFIX}tc_user_rol ur ON u.fk_user_rol = ur.id
+    WHERE (username = ? OR email = ?) AND is_active=1;
   `;
   const [rows] = await conn.query<UserSQL[]>(SQL, [username, email]);
+  console.log(rows);
   const [user] = rows;
 
   return user;

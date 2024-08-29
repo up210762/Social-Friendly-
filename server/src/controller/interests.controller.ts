@@ -9,20 +9,22 @@ import {
     selectInterestsService,
     selectInterestsWithType
 } from '../services/interests';
-import {KnnClassifier, TraerUsersCercanos } from '../services/knnClassifier';
+import { KnnClassifier, TraerUsersCercanos } from '../services/knnClassifier';
+import { JWT_SECRET } from '../keys';
+import { verify } from 'jsonwebtoken';
 
 export async function getUserInterestRoute(req: Request, res: Response) {
     const user_id: number = parseInt(req.params.id!);
     const userInterests: any = req.body.interests;
-    console.log("User: "+ user_id + " Interests_id: " + userInterests);
+    console.log("User: " + user_id + " Interests_id: " + userInterests);
     const [users]: any = await getUsersInterestsService(user_id);
 
     if (!users) {
         res.json({ message: "Sin intereses" });
         return
     }
-    const ids  = TraerUsersCercanos(users,20);
-    const [userCommon]: any = await getUsersInCommonService(user_id,ids);
+    const ids = TraerUsersCercanos(users, 20);
+    const [userCommon]: any = await getUsersInCommonService(user_id, ids);
     res.json(userCommon);
 }
 
@@ -84,20 +86,38 @@ export async function getInterestByType(req: Request, res: Response) {
 }
 
 export async function registerInterest(req: Request, res: Response) {
-        const userId = parseInt(req.params.id!);
-        const interests: number[] = req.body.interests || [];
+    const authHeader = req.headers['authorization'];
+
+    if (typeof authHeader !== 'string' || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "No authorization header" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "Token is missing" });
+    }
+
+    const decoded: any = verify(token, JWT_SECRET);
+    const userId: number = decoded.id;
+    const interests: Array<number> = req.body.interests;
+
+    if (interests && interests.length > 0) {
         let success: boolean = false;
+
         //console.log(interests);
-        interests.map(interest => {
+        interests.map((interest: any) => {
             const resp = selectInterestsService(userId, interest)
             if (!resp)
                 success = false;
             success = true;
         })
-        
+
         if (success == false) {
-            res.json("Error. No se pudo registrar.")
-            return
+            return res.status(400).json("Error. No se pudo registrar.")
         }
-        res.json("Intereses agregados correctamente.")
+        return res.json("Intereses agregados correctamente.")
+    } else {
+        return res.status(400).json("No se seleccionaron intereses.")
+    }
 }
