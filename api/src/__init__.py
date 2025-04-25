@@ -3,15 +3,13 @@ from flask_cors import CORS
 
 import traceback
 
-from .routes.Files import (CreateUserDirectoryRoute, DownloadFilesRoute, 
+from .routes.Files import (CreateUserDirectoryRoute, 
+                           DownloadFilesRoute, 
                            GetUploadFilesRoute, 
                            UploadImageRoutes,
                            DeleteFilesRoute)
 
-from .routes.Test import (TestGet,
-                          TestPost,
-                          TestPut,
-                          TestDelete)
+from .routes.Test import TestRoute
 
 from .routes.Auth import AuthRoute
 
@@ -31,10 +29,7 @@ try:
             app.register_blueprint(UploadImageRoutes.main, url_prefix='/api/upload-image/<id>')
             app.register_blueprint(DownloadFilesRoute.main, url_prefix='/api/download/<path>/<file>')
             app.register_blueprint(DeleteFilesRoute.main, url_prefix='/api/delete-file/<filename>')
-            app.register_blueprint(TestGet.main, url_prefix='/api/test')
-            app.register_blueprint(TestPost.main, url_prefix='/api/test')
-            app.register_blueprint(TestPut.main, url_prefix='/api/test')
-            app.register_blueprint(TestDelete.main, url_prefix='/api/test')
+            app.register_blueprint(TestRoute.main, url_prefix='/api/test')
             app.register_blueprint(AuthRoute.main, url_prefix='/api/api-auth')
             
             return app

@@ -148,7 +148,6 @@ export const getRol = async (req: Request, res: Response) => {
         const decoded: any = verify(token, JWT_SECRET);
         const userId = decoded.id;
         const [resp] = await getRolService(userId);
-        console.log(resp)
         if (!resp)
             return res.status(400).json({ message: "Error en la petición." })
         else {

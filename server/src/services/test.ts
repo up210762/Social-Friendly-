@@ -2,7 +2,7 @@ import getToken from "./serverAuth";
 import { API_URL, JWT_SECRET } from "../keys";
 import { verify } from "jsonwebtoken";
 import { STATUS_CODES } from "http";
-
+import { number, string } from "zod";
 
 const API_PHOTOS = new URL('test', API_URL);
 
@@ -25,14 +25,15 @@ export const testGetMethodService = async (token: string) => {
                     message: 'No estás autorizado'
             }
         
-        const message = await res.json()
+        const message: any = await res.json()
         
         if (message)
             return {
                 status: res.status,
-                message: message
+                message: message.message
             }
     } catch (err) {
+        console.log(err)
         return {
             status: 500,
             message: 'No se puede conectar al servidor de fotos.'
@@ -59,12 +60,12 @@ export const testPostMethodService = async (token: string) => {
                     message: 'No estás autorizado'
             }
         
-        const message = await res.json()
+        const message: any = await res.json()
         
         if (message)
             return {
                 status: res.status,
-                message: message
+                message: message.message
             }
     } catch (err) {
         return {
@@ -82,7 +83,7 @@ export const testPutMethodService = async (token: string) => {
         const res = await fetch(API_PHOTOS, {
             method: 'PUT',
             headers: {
-                "Authorization": `Bearer 21j3o1ij2o1ij2j13j`,
+                "Authorization": ``,
             }
         });
 
@@ -93,12 +94,12 @@ export const testPutMethodService = async (token: string) => {
                     message: 'No estás autorizado'
             }
         
-        const message = await res.json()
-        
+        const message: any = await res.json()
+    
         if (message)
             return {
                 status: res.status,
-                message: message
+                message: message.message
             }
     } catch (err) {
         return {
@@ -127,12 +128,12 @@ export const testDeleteMethodService = async (token: string) => {
                     message: 'No estás autorizado'
             }
         
-        const message = await res.json()
-        
+        const message: any = await res.json()
+    
         if (message)
             return {
                 status: res.status,
-                message: message
+                message: message.message
             }
     } catch (err) {
         return {

@@ -19,7 +19,6 @@ export const findOneBy = async ({ email, username }: UserSearch) => {
     WHERE (username = ? OR email = ?) AND is_active=1;
   `;
   const [rows] = await conn.query<UserSQL[]>(SQL, [username, email]);
-  console.log(rows);
   const [user] = rows;
 
   return user;
